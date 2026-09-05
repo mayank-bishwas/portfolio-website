@@ -1,0 +1,691 @@
+/* Classical — design-system tokens and component classes. This file is the source of truth
+   for the system's look; carried over from the Claude Design export as-is so future pages
+   (About, SEO, Writings, etc.) share the same base. */
+:root {
+  --color-bg: #f3f2f2;
+  --color-surface: #eae9e9;
+  --color-text: #201f1d;
+  --color-accent: #b68235;
+  --color-accent-2: #ac803e;
+  --color-divider: color-mix(in srgb, #201f1d 16%, transparent);
+
+  /* Tonal ramps — generated in OKLCH on one shared lightness scale, so the
+     same step of any role matches the others in visual value. */
+  --color-neutral-100: #f8f4f4;
+  --color-neutral-200: #eae7e7;
+  --color-neutral-300: #d7d3d3;
+  --color-neutral-400: #bab6b6;
+  --color-neutral-500: #9b9797;
+  --color-neutral-600: #7d7979;
+  --color-neutral-700: #605d5d;
+  --color-neutral-800: #444141;
+  --color-neutral-900: #2d2b2b;
+
+  --color-accent-100: #fff3e4;
+  --color-accent-200: #ffe3bf;
+  --color-accent-300: #facb8d;
+  --color-accent-400: #e1ad66;
+  --color-accent-500: #c28d41;
+  --color-accent-600: #a06f24;
+  --color-accent-700: #7d5411;
+  --color-accent-800: #5a3b0a;
+  --color-accent-900: #3a270d;
+
+  --color-accent-2-100: #fff3e4;
+  --color-accent-2-200: #ffe3be;
+  --color-accent-2-300: #f5cd96;
+  --color-accent-2-400: #dbaf70;
+  --color-accent-2-500: #bc8f4e;
+  --color-accent-2-600: #9b7232;
+  --color-accent-2-700: #79561f;
+  --color-accent-2-800: #573d14;
+  --color-accent-2-900: #382810;
+
+  --font-heading: "Cormorant Garamond", system-ui, sans-serif;
+  --font-heading-weight: 600; /* review round 3: bold retired — semibold is the
+     interface headings' ceiling (they need the weight at small sizes); display
+     text goes lighter still, to the normal cut (see the deck) */
+  --font-body: "Lora", system-ui, sans-serif;
+
+  --space-1: 4.6px;
+  --space-2: 9.2px;
+  --space-3: 13.8px;
+  --space-4: 18.4px;
+  --space-6: 27.6px;
+  --space-8: 36.8px;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 7px;
+
+  /* Elevation — derived from the ground: soft ink-tinted shadows on a
+     light theme, a hairline edge + ambient darkness on a dark one. */
+  --shadow-sm: 0 1px 2px color-mix(in srgb, #2d2b2b 14%, transparent);
+  --shadow-md: 0 3px 10px color-mix(in srgb, #2d2b2b 16%, transparent);
+  --shadow-lg: 0 12px 32px color-mix(in srgb, #2d2b2b 22%, transparent);
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+}
+h1, h2, h3, h4 { font-family: var(--font-heading); font-weight: var(--font-heading-weight); }
+
+.plate{filter:sepia(0.22) saturate(0.82) contrast(1.05);box-sizing:border-box;
+  border:6px solid var(--color-surface);outline:1px solid var(--color-divider)}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Components — built with the tokens above. Plain CSS
+   on plain HTML: no JavaScript, no build step. Each class is documented in
+   readme.md and demonstrated in foundations/ and components/.
+   ══════════════════════════════════════════════════════════════════════ */
+
+*, *::before, *::after { box-sizing: border-box; }
+body { margin: 0; font-size: 15px; line-height: 1.55; font-weight: 400; }
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  line-height: 1.12; letter-spacing: -0.015em; margin: 0 0 var(--space-2);
+}
+h1 { font-size: 42px; }
+h2 { font-size: 32px; }
+h3 { font-size: 25px; }
+h4 { font-size: 20px; }
+h5 { font-size: 16px; }
+h6 { font-size: 13px; }
+h6 { letter-spacing: 0.08em; text-transform: uppercase; }
+p { margin: 0 0 var(--space-3); }
+a { color: var(--color-accent); text-underline-offset: 3px; }
+img { display: block; max-width: 100%; }
+figure { margin: 0; }
+figcaption {
+  font-size: 11px; margin-top: var(--space-1);
+  color: color-mix(in srgb, var(--color-text) 55%, transparent);
+}
+.text-muted { color: color-mix(in srgb, var(--color-text) 55%, transparent); }
+:focus { outline: none; }
+:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+::selection { background: color-mix(in srgb, var(--color-accent) 30%, transparent); }
+
+/* — rules — */
+.hr {
+  height: 1px; border: 0; margin: var(--space-4) 0;
+  background: var(--color-divider);
+}
+
+/* — buttons — */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  cursor: pointer; text-decoration: none;
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 14px; line-height: 1.2; color: var(--color-text); /* matches the .input's 14px —
+     the pair sits side by side in sign-up rows */
+  background: transparent; border: 1px solid transparent;
+  padding: var(--space-2) calc(var(--space-3) * 1.2);
+  border-radius: var(--radius-md);
+}
+.btn svg { display: block; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-primary { color: var(--color-accent); border-color: var(--color-accent); }
+.btn-primary:hover { background: color-mix(in srgb, var(--color-accent) 12%, transparent); }
+.btn-primary:active { background: color-mix(in srgb, var(--color-accent) 22%, transparent); }
+.btn-secondary { border-color: var(--color-divider); }
+.btn-secondary:hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
+.btn-secondary:active { background: color-mix(in srgb, var(--color-text) 14%, transparent); }
+.btn-ghost { color: var(--color-accent); padding-inline: var(--space-1); }
+.btn-ghost:hover { background: color-mix(in srgb, var(--color-accent) 10%, transparent); }
+.btn-ghost:active { background: color-mix(in srgb, var(--color-accent) 18%, transparent); }
+.btn-icon { width: 36px; height: 36px; padding: 0; }
+.btn-block { width: 100%; margin-top: var(--space-2); }
+
+/* — forms — */
+.field > label {
+  display: block; font-size: 12px; margin-bottom: 5px;
+  color: color-mix(in srgb, var(--color-text) 70%, transparent);
+}
+.input {
+  width: 100%; min-height: 36px; padding: 6px 10px; font: inherit;
+  font-size: 14px; color: var(--color-text); caret-color: var(--color-accent);
+  background: transparent;
+  border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+}
+.input:hover { border-color: color-mix(in srgb, var(--color-text) 45%, transparent); }
+.input:focus-visible { border-color: var(--color-accent); outline-offset: 0; }
+textarea.input { min-height: 90px; resize: vertical; }
+.radio { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; }
+.radio input, .seg-opt input {
+  position: absolute; opacity: 0; width: 0; height: 0; pointer-events: none;
+}
+.radio .dot {
+  width: 16px; height: 16px; flex: none; border-radius: 50%;
+  border: 1.5px solid var(--color-divider);
+}
+.radio:hover .dot { border-color: var(--color-accent); }
+.radio input:checked + .dot {
+  border-color: var(--color-accent); background: var(--color-accent);
+  box-shadow: inset 0 0 0 4px var(--color-bg);
+}
+.radio input:focus-visible + .dot { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+.seg {
+  display: inline-flex; overflow: hidden;
+  border: 1px solid var(--color-divider); border-radius: var(--radius-md);
+}
+.seg-opt {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px; font-size: 13px; cursor: pointer;
+}
+.seg-opt + .seg-opt { border-left: 1px solid var(--color-divider); }
+.seg-opt:has(input:checked) { color: var(--color-accent); box-shadow: inset 0 0 0 1px var(--color-accent); }
+.seg-opt:not(:has(input:checked)):hover { background: color-mix(in srgb, var(--color-text) 7%, transparent); }
+.seg-opt:has(input:focus-visible) { outline: 2px solid var(--color-accent); outline-offset: -2px; }
+
+/* — cards — */
+.card {
+  display: flex; flex-direction: column; gap: var(--space-2);
+  padding: var(--space-3); border-radius: var(--radius-md); background: transparent; border: 1px solid var(--color-divider);
+}
+.card-kicker { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-accent); }
+.card-title {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 17px; line-height: 1.2;
+}
+.card-body { margin: 0; font-size: 13px; opacity: 0.8; flex: 1; }
+.card-meta {
+  display: flex; align-items: center; gap: 6px; font-size: 11px;
+  color: color-mix(in srgb, var(--color-text) 50%, transparent);
+}
+.elev-sm { box-shadow: var(--shadow-sm); }
+.elev-md { box-shadow: var(--shadow-md); }
+.elev-lg { box-shadow: var(--shadow-lg); }
+
+/* — tags — */
+.tag {
+  display: inline-flex; align-items: center; font-size: 11px;
+  letter-spacing: 0.02em; padding: 3px 10px;
+  border-radius: calc(var(--radius-md) * 0.75);
+}
+.tag-accent { background: var(--color-accent-100); color: var(--color-accent-800); }
+.tag-accent-2 { background: var(--color-accent-2-100); color: var(--color-accent-2-800); }
+.tag-neutral { background: var(--color-neutral-100); color: var(--color-neutral-800); }
+.tag-outline { border: 1px solid var(--color-accent); color: var(--color-accent); }
+
+/* — navigation — */
+.nav {
+  display: flex; align-items: center; gap: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-divider);
+}
+.nav-brand {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 18px; margin-right: auto;
+}
+.nav a { color: inherit; text-decoration: none; font-size: 14px; }
+.nav a:hover, .nav a[aria-current='page'] { color: var(--color-accent); }
+
+/* — tables — */
+.table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.table th {
+  text-align: left; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-text) 60%, transparent);
+  padding: var(--space-2); border-bottom: 1px solid var(--color-divider);
+}
+.table td {
+  padding: var(--space-2);
+  border-bottom: 1px solid var(--color-divider);
+}
+.table tbody tr:hover { background: color-mix(in srgb, var(--color-text) 4%, transparent); }
+
+/* — dialog — */
+.dialog-backdrop {
+  position: fixed; inset: 0; display: grid; place-items: center;
+  padding: var(--space-4);
+  background: color-mix(in srgb, var(--color-neutral-900) 50%, transparent);
+}
+.dialog {
+  width: min(440px, 100%); display: flex; flex-direction: column; gap: var(--space-3);
+  padding: var(--space-4); border-radius: var(--radius-lg);
+  background: var(--color-surface); box-shadow: var(--shadow-lg); border: 1px solid var(--color-divider);
+}
+.dialog-title {
+  font-family: var(--font-heading); font-weight: var(--font-heading-weight);
+  font-size: 20px;
+}
+.dialog-body { font-size: 14px; opacity: 0.85; }
+.dialog-actions { display: flex; justify-content: flex-end; gap: var(--space-2); margin-top: var(--space-2); }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Homepage — hero stage
+   ══════════════════════════════════════════════════════════════════════ */
+
+html, body { margin: 0; padding: 0; background: #fbfbfb; height: 100%; overflow: hidden; }
+a { color: inherit; text-decoration: none; }
+a:hover { color: inherit; }
+::selection { background: rgba(182,130,53,0.18); }
+*:focus-visible { outline: 2px solid #b68235; outline-offset: 3px; }
+
+@keyframes omFloat {
+  0%   { transform: translate3d(0, 0, 0) scale(1); }
+  50%  { transform: translate3d(0, -9px, 0) scale(1.012); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+@keyframes omBlink {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+@keyframes omSwayA {
+  0%   { transform: translate3d(0, 0, 0) scale(1.02); opacity: 0.62; }
+  33%  { transform: translate3d(-16px, 9px, 0) scale(1.05); opacity: 0.4; }
+  66%  { transform: translate3d(11px, -7px, 0) scale(1.03); opacity: 0.58; }
+  100% { transform: translate3d(0, 0, 0) scale(1.02); opacity: 0.62; }
+}
+@keyframes omSwayB {
+  0%   { transform: translate3d(0, 0, 0) scale(1.06); opacity: 0.34; }
+  40%  { transform: translate3d(14px, -11px, 0) scale(1.02); opacity: 0.6; }
+  75%  { transform: translate3d(-9px, 8px, 0) scale(1.05); opacity: 0.42; }
+  100% { transform: translate3d(0, 0, 0) scale(1.06); opacity: 0.34; }
+}
+@keyframes omSwayFooter {
+  0%   { transform: translate3d(0, 0, 0) scale(1.04); opacity: 0.5; }
+  25%  { transform: translate3d(-22px, 6px, 0) scale(1.07); opacity: 0.72; }
+  55%  { transform: translate3d(18px, -5px, 0) scale(1.03); opacity: 0.44; }
+  80%  { transform: translate3d(-7px, 10px, 0) scale(1.06); opacity: 0.66; }
+  100% { transform: translate3d(0, 0, 0) scale(1.04); opacity: 0.5; }
+}
+
+/* — background grain — */
+/* opacity 0.5 baked in here (not left to script.js's grain.style.opacity JS assignment) so
+   every page renders the same grain strength regardless of which page script — script.js
+   (homepage) or site.js (content pages) — happens to be loaded. Previously only the homepage
+   set this via JS, so content pages rendered the grain at full, un-dimmed opacity. */
+#grain { position: fixed; inset: 0; pointer-events: none; z-index: 5; mix-blend-mode: multiply; opacity: 0.5; }
+.grain-layer {
+  position: absolute; inset: -90px;
+  background-image: url("images/grain-texture.png");
+  background-repeat: repeat;
+  will-change: transform, opacity;
+}
+.grain-layer--a { background-size: 256px 256px; animation: omSwayA 34s ease-in-out infinite; }
+.grain-layer--b { background-size: 172px 172px; animation: omSwayB 47s ease-in-out infinite; }
+.grain-layer--footer {
+  background-size: 208px 208px; animation: omSwayFooter 23s ease-in-out infinite;
+  -webkit-mask-image: linear-gradient(180deg, rgba(0,0,0,0) 42%, rgba(0,0,0,0.55) 74%, rgba(0,0,0,1) 100%);
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0) 42%, rgba(0,0,0,0.55) 74%, rgba(0,0,0,1) 100%);
+}
+
+/* — stage — */
+.hero-stage-wrap {
+  height: 100vh; width: 100vw; background: #fcfbfb;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+#stage { position: relative; width: 1600px; height: 1040px; flex: none; transform-origin: center center; }
+
+/* — "Latest Work" link — */
+.latest-work { position: absolute; left: 600px; top: 30px; width: 400px; text-align: center; }
+.latest-work a {
+  display: inline-block; font-family: 'Instrument Serif', serif; font-size: 16px; line-height: 1.3;
+  color: #454545; letter-spacing: 0.01em; border-bottom: 1px solid transparent; padding-bottom: 2px;
+  transition: border-color 700ms cubic-bezier(0.22,0.61,0.36,1), color 700ms cubic-bezier(0.22,0.61,0.36,1);
+}
+.latest-work a:hover { border-bottom-color: rgba(69,69,69,0.55); color: #2b2b2b; }
+
+/* — "Open for work" indicator — */
+.open-for-work { position: absolute; left: 1350px; top: 24px; display: flex; align-items: center; gap: 9px; }
+.open-for-work-dot {
+  width: 12px; height: 12px; border-radius: 50%; background: #EA1515; border: 1px solid #BFA1A1;
+  display: block; animation: omBlink 3.6s ease-in-out infinite;
+}
+.open-for-work-label { font-family: 'Inria Sans', sans-serif; font-size: 16px; line-height: 1.3; color: #EA1515; }
+
+/* — central glowing object — */
+#object { position: absolute; left: 581px; top: 150px; width: 438px; height: 451px; display: block; will-change: transform; }
+.object-shadow {
+  position: absolute; left: 22%; bottom: 26px; width: 56%; height: 26px; border-radius: 50%;
+  background: rgba(120,118,104,0.28); filter: blur(16px); opacity: 0;
+  transition: opacity 900ms cubic-bezier(0.22,0.61,0.36,1), transform 900ms cubic-bezier(0.22,0.61,0.36,1);
+}
+#object:hover .object-shadow { opacity: 1; transform: translateY(6px) scaleX(1.06); }
+.object-art {
+  position: absolute; inset: 0; display: block;
+  background-image: url("images/atom-glow.png");
+  background-size: contain; background-repeat: no-repeat; background-position: center;
+  filter: saturate(1.12) contrast(1.05) drop-shadow(0 0 14px rgba(227,223,162,0.58)) drop-shadow(0 0 50px rgba(174,178,164,0.55));
+  animation: omFloat 11s ease-in-out infinite;
+}
+.object-art-tint {
+  position: absolute; inset: 0; display: block;
+  background-image: linear-gradient(160deg, rgba(148,146,120,0.55), rgba(120,140,134,0.5));
+  mix-blend-mode: hard-light;
+  -webkit-mask-image: url("images/atom-glow.png"); mask-image: url("images/atom-glow.png");
+  -webkit-mask-size: contain; mask-size: contain;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+  -webkit-mask-position: center; mask-position: center;
+}
+
+/* — card carousel — */
+#card-track {
+  position: absolute; left: 0; top: 320px; width: 1600px; height: 236px;
+  perspective: 1500px; perspective-origin: 50% 50%;
+  pointer-events: none; /* only the visible cards themselves are grabbable, not the full-width track */
+}
+body.is-dragging-carousel,
+body.is-dragging-carousel a,
+body.is-dragging-carousel .carousel-card-face,
+body.is-dragging-carousel .carousel-card::before {
+  cursor: grabbing !important;
+}
+.carousel-card {
+  position: absolute; left: 50%; top: 44.6px; width: 141.16px; height: 178.4px; margin-left: -70.58px;
+  will-change: transform, opacity; touch-action: none;
+  user-select: none; -webkit-user-select: none;
+}
+/* A generous grab/drag hit-area (60px on every side) that never triggers the card's own
+   click-through — it inherits the card's own pointer-events (auto/none) so hidden/off-stage
+   cards stay non-interactive, but this pseudo-element is a plain div, not the <a>, so hovering
+   or clicking in the padding (or in the gaps between cards) never navigates. The visible
+   .carousel-card-face sits on top of it within the card's own bounds and still opens the link. */
+.carousel-card::before {
+  content: "";
+  position: absolute;
+  inset: -60px;
+  cursor: grab;
+}
+.carousel-card-face {
+  position: relative; display: flex; align-items: flex-end; justify-content: center;
+  padding-bottom: 16px;
+  width: 100%; height: 100%; border-radius: 4px; border: 1px solid #E5E0E0;
+  box-shadow: -2px 4px 17px rgba(167,164,164,0.51); overflow: hidden;
+  cursor: pointer; touch-action: none;
+}
+.carousel-card-grain {
+  position: absolute; inset: 0;
+  background-image: url("images/grain-texture.png");
+  background-repeat: repeat; background-size: 128px 128px; opacity: 0.55;
+  mix-blend-mode: multiply; pointer-events: none;
+}
+.carousel-card-title {
+  position: relative; font-family: 'Instrument Serif', serif; font-size: 28px; line-height: 36px;
+  letter-spacing: -0.02em; color: #FFFAFA; text-shadow: 0px 2px 1px rgba(0,0,0,0.32);
+  text-align: center; white-space: nowrap;
+}
+.carousel-card-corner {
+  position: absolute; font-family: Inspiration, cursive; font-size: 26px; line-height: 1;
+  color: #FFFAFA; text-shadow: 0px 1px 2px rgba(0,0,0,0.5); transform: rotate(-6deg);
+}
+/* clustered around the title rather than pinned to the card's far corners */
+.carousel-card-corner--pre { left: 22px; bottom: 56px; }
+.carousel-card-corner--post { right: 14px; bottom: 6px; }
+
+/* — byline — */
+.byline { position: absolute; left: 374.25px; top: 622px; display: flex; align-items: center; }
+.byline-name {
+  font-family: 'Instrument Serif', serif; font-size: 38px; line-height: 1.1; color: #454545;
+  transition: color 800ms cubic-bezier(0.22,0.61,0.36,1);
+}
+.byline-name:hover {
+  background-image: linear-gradient(96deg, #6fae9d 0%, #b9bd6a 38%, #7fb8c2 72%, #a89a6a 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+}
+
+/* — bio — */
+.bio { position: absolute; left: 50%; top: 712px; transform: translateX(-50%); display: flex; align-items: stretch; gap: 22px; }
+.bio-rule { display: block; width: 1.5px; background: #454545; flex: none; }
+.bio p { margin: 0; width: 828px; font-family: 'Inria Sans', sans-serif; font-size: 20px; line-height: 1.3125; color: #454545; text-wrap: pretty; }
+
+/* — nav links — */
+.nav-links { position: absolute; left: 50%; top: 855px; width: 861px; transform: translateX(-50%); display: flex; align-items: baseline; }
+.nav-link {
+  font-family: 'Instrument Serif', serif; font-size: 28px; line-height: 1.2; color: #454545;
+  transition: color 800ms cubic-bezier(0.22,0.61,0.36,1);
+}
+.nav-link:hover {
+  background-image: linear-gradient(96deg, #6fae9d 0%, #b9bd6a 38%, #7fb8c2 72%, #a89a6a 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+}
+
+/* — footer icons — */
+.footer-links { position: absolute; left: 0; top: 963px; width: 1600px; display: flex; align-items: center; justify-content: center; gap: 20px; }
+.footer-icon {
+  display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; color: #454545;
+  transition: transform 650ms cubic-bezier(0.22,0.61,0.36,1), color 650ms cubic-bezier(0.22,0.61,0.36,1);
+}
+.footer-icon:hover { transform: translateY(-4px); color: #7fae9c; }
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   Content pages — shared header/footer/sidebar for pages beyond the homepage
+   (About, Writings, MBA Archive, SEO, etc.)
+   ══════════════════════════════════════════════════════════════════════ */
+
+/* App-shell layout: the outer page itself never scrolls. Header stays put, sidebar stays put
+   ("totally sticky ... no scrolling on this side, neither at top nor bottom" — sticky still
+   unsticks once its containing block's edge is reached; a fixed, non-scrolling shell is the
+   only way to guarantee it never moves), and only .page-main scrolls internally. */
+html.content-page, body.content-page { height: 100%; overflow: hidden; }
+body.content-page { display: flex; flex-direction: column; }
+
+/* — chrome canvas — the homepage positions .latest-work/.open-for-work/.nav-links/.footer-links
+   via absolute px coordinates inside one fixed 1600×1040 #stage, scaled as a single unit. A
+   generic flexbox header/footer can only ever coincidentally line up with that; this reproduces
+   the same coordinate system (a 1600px-wide canvas, same zoom formula) so the shared elements
+   (reused verbatim below) land at their exact homepage px positions on this page too. */
+.chrome-canvas { position: relative; width: 1600px; margin: 0 auto; }
+.chrome-canvas--header { height: 90px; }
+.chrome-canvas--footer { height: 145px; }
+
+/* — site header — */
+/* Transparent at rest (same page background shows through, matching the homepage's chrome-less
+   look); a soft band + blur only appears once .page-main has scrolled (toggled by site.js). */
+.site-header {
+  flex: none; z-index: 40;
+  background: transparent;
+  transition: background 300ms ease, backdrop-filter 300ms ease;
+  /* zoom lives on the wrapper, not .chrome-canvas itself, so that any of the wrapper's own
+     box-model properties (padding etc.) scale proportionally too, exactly like the homepage's
+     own #stage-relative spacing does at every viewport — not just at one specific window size. */
+  zoom: clamp(0.55, min(calc(100vw / 1600px), calc(100vh / 1040px)), 1);
+}
+.site-header.is-scrolled {
+  /* the site's palette is near-white already, so 0.7 alpha read as solid white — lower alpha
+     + stronger blur so the glass effect is actually visible against light content */
+  background: rgba(251,251,251,0.4);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.site-header-home {
+  position: absolute; left: 120px; top: 18px; display: block;
+}
+.site-header-home img {
+  display: block; height: 45px; width: auto; /* 50% larger, full original color — no more muting */
+  transition: transform 400ms cubic-bezier(0.22,0.61,0.36,1), filter 400ms cubic-bezier(0.22,0.61,0.36,1);
+}
+.site-header-home:hover img { transform: scale(1.1); filter: brightness(1.2) saturate(1.15); }
+
+/* — the row below the header — */
+.page-row { flex: 1; min-height: 0; position: relative; }
+
+/* Sidebar overlays the content as a fixed element — it does NOT take up flex width, so
+   .page-main and everything centered inside it is centered against the FULL viewport,
+   exactly like the homepage (which has no sidebar to offset it). This is why the footer
+   below lines up with the homepage's footer instead of drifting right. */
+.page-sidebar {
+  position: fixed; left: 24px; top: calc(var(--header-h, 78px) + 60px);
+  width: 176.8px;
+  display: flex; flex-direction: column; gap: 12px;
+  z-index: 30;
+}
+.page-card {
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  width: 176.8px; height: 47.74px;
+  border: 1px solid #D7CCCC; border-radius: 4px;
+  box-shadow: -2px 4px 17px rgba(167,164,164,0.51);
+  font-family: 'Instrument Serif', serif; font-size: 22.4px; line-height: 1.3; text-align: center;
+  color: #454545; text-shadow: none;
+  filter: grayscale(0.85) opacity(0.6);
+  transition: filter 450ms cubic-bezier(0.22,0.61,0.36,1), color 450ms cubic-bezier(0.22,0.61,0.36,1), text-shadow 450ms cubic-bezier(0.22,0.61,0.36,1);
+}
+.page-card:hover,
+.page-card.is-current {
+  filter: grayscale(0) opacity(1);
+  color: #FFFFFF; text-shadow: 0px 4px 2px rgba(75,73,73,0.21);
+}
+/* the "going the Extra mile" flourish on the Extra card, echoing the homepage carousel card's
+   corner treatment (.carousel-card-corner) at a scale that fits this much smaller button.
+   Positioned absolutely so it doesn't disturb the flex-centered "Extra" text between them. */
+.page-card-corner {
+  position: absolute;
+  font-family: Inspiration, cursive; font-size: 15px; line-height: 1;
+  transform: rotate(-6deg);
+}
+.page-card-corner--pre { left: 29px; top: 11px; }
+.page-card-corner--post { right: 48px; bottom: 10px; }
+.page-sidebar-home {
+  display: inline-block; margin: 8px 0 0 4px;
+  font-family: 'Instrument Serif', serif; font-size: 15px; color: #454545;
+  transition: color 800ms cubic-bezier(0.22,0.61,0.36,1);
+}
+.page-sidebar-home-arrow { font-size: 0.667em; }
+.page-sidebar-home:hover {
+  background-image: linear-gradient(96deg, #6fae9d 0%, #b9bd6a 38%, #7fb8c2 72%, #a89a6a 100%);
+  -webkit-background-clip: text; background-clip: text;
+  color: transparent; -webkit-text-fill-color: transparent;
+}
+
+/* — content pane: the only thing on this page that scrolls. Full width (the sidebar overlays
+   on top via position:fixed, it doesn't share flex space), so the inner column below centers
+   on the whole viewport — same as the homepage. */
+/* Scrollbar hidden (still fully scrollable via wheel/trackpad/keyboard) rather than just
+   styled — a *visible* scrollbar reserves gutter width that the homepage never has (it doesn't
+   scroll at all), which was shifting everything centered inside .page-main a few px left of
+   where it sits on the homepage. Hiding it removes that asymmetry entirely instead of just
+   shrinking it. */
+.page-main {
+  width: 100%; height: 100%; overflow-y: auto; overflow-x: hidden;
+  scrollbar-width: none; -ms-overflow-style: none;
+}
+.page-main::-webkit-scrollbar { display: none; }
+/* The homepage's whole canvas scales with viewport width (transform:scale in #stage), so its
+   authored px values render at a different actual on-screen size depending on the window.
+   Applying the same width-based scale here (zoom keeps layout/scroll height in sync, unlike
+   transform) is what makes the two pages' type/spacing actually match on screen, not just in
+   the CSS source — matching the raw numbers alone isn't enough once the homepage itself scales. */
+.page-main-inner {
+  max-width: 919px; margin: 0 auto; padding: 24px 24px 0;
+  zoom: clamp(0.55, min(calc(100vw / 1600px), calc(100vh / 1040px)), 1);
+}
+
+/* — site footer — reuses .nav-links/.footer-links/.nav-link/.footer-icon verbatim (the
+   homepage's own classes, unmodified) inside a second .chrome-canvas, so "About" etc. land at
+   the exact same x position as on the homepage instead of just visually approximating it.
+   Only `top` is overridden here, rebased to a footer-only canvas (0 / 108px instead of the
+   homepage's 855px / 963px — same 108px gap between the two rows, no unused hero space above). */
+/* Top: measured live against the homepage's own equivalent gap (bio paragraph bottom to
+   .nav-links top) instead of eyeballing it — that gap is 64.25px pre-zoom on the homepage.
+   The last .page-section already contributes 24px of its own bottom padding before its
+   divider line, so the remaining 40px here (24+40=64) reproduces that gap almost exactly.
+   Bottom: 34px — the homepage's #stage is 1040px tall with .footer-links at top:963px and a
+   26px-tall .footer-icon box, leaving 1040-(963+26)=51px below it; .chrome-canvas--footer's
+   own height (145px) already accounts for 11px of that, and this was tuned against the live
+   rendered result (not just the arithmetic) to land within half a pixel of the homepage's
+   actual measured bottom margin. */
+/* zoom here (not on .chrome-canvas) so the padding below scales proportionally with the
+   viewport, matching the homepage's own #stage-relative spacing at every window size instead
+   of only the one size it was tuned against. */
+.site-footer { padding: 64px 0 40px; text-align: center; zoom: clamp(0.55, min(calc(100vw / 1600px), calc(100vh / 1040px)), 1); }
+.chrome-canvas--footer .nav-links { top: 0; }
+.chrome-canvas--footer .footer-links { top: 108px; }
+
+/* — colour marker (the circle a page-card "lands" in) — light gradient up top, darker down
+   the bottom, same as the sidebar cards. (An animated swirling-grain version was tried and
+   dropped — wasn't visibly noticeable to the user, not worth the extra markup/CSS.) */
+.page-marker {
+  width: 100px; height: 100px; border-radius: 50%;
+  margin: 6px 0 32px;
+  background: linear-gradient(180deg, #D1F1C1 0%, #728469 100%);
+  box-shadow: 0 10px 24px rgba(120,118,104,0.28);
+}
+/* About page: a real photo instead of a colour swatch. The PNG is already a soft cutout with
+   a transparent background, so show it as-is (no forced circle crop) — just a matching shadow,
+   as a filter so it hugs the cutout's own silhouette rather than its rectangular bounding box. */
+img.page-marker { width: auto; height: 110px; border-radius: 0; object-fit: contain; background: none; box-shadow: none; filter: drop-shadow(0 8px 16px rgba(120,118,104,0.32)); }
+
+/* — page title / intro — the exact same sizes as the homepage's own "Mayank Bishwas" (38px)
+   and intro paragraph (20px), not an approximation of them. */
+.page-title { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 38px; color: #454545; margin: 0 0 32px; }
+.page-intro p { font-family: 'Inria Sans', sans-serif; font-size: 20px; line-height: 1.3125; color: #454545; margin: 0 0 18px; }
+
+/* — accordion sections — */
+.page-section { border-top: 1px solid rgba(69,69,69,0.18); padding: 24px 0; }
+.page-section:last-of-type { border-bottom: 1px solid rgba(69,69,69,0.18); }
+.page-section > summary {
+  list-style: none; cursor: pointer;
+  display: flex; align-items: center; gap: 14px;
+  font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 26px; color: #454545;
+}
+.page-section > summary::-webkit-details-marker { display: none; }
+.page-section > summary::before {
+  content: "▶"; font-size: 15px; color: #7d7979; transition: transform 350ms cubic-bezier(0.22,0.61,0.36,1);
+}
+.page-section[open] > summary::before { transform: rotate(90deg); }
+.page-section:not([open]) > .page-section-body { display: none; }
+.page-section[open] > .page-section-body { display: flex; flex-direction: column; gap: 32px; padding-top: 40px; }
+.page-item { display: flex; gap: 32px; align-items: flex-start; }
+.page-item--media-pair .page-item-media { flex: 1 1 0; }
+.page-item-media { flex: 0 0 222px; }
+.page-item--routewise .page-item-media { flex-basis: 222px; }
+.page-item-media img { width: 100%; height: auto; border-radius: 4px; border: 1px solid #D7CCCC; display: block; }
+.page-item-media figcaption { margin-top: 6px; font-size: 13px; color: #8c8383; text-align: center; }
+.page-item-media iframe { width: 100%; aspect-ratio: 16/9; border-radius: 4px; border: 1px solid #D7CCCC; display: block; }
+.page-item-text { flex: 1; font-family: 'Inria Sans', sans-serif; font-size: 20px; line-height: 1.3125; color: #454545; }
+.page-item-text strong { font-family: 'Inria Sans', sans-serif; font-weight: 700; font-size: 20px; color: #454545; }
+.page-item-text a { color: #6fae9d; text-decoration: underline; text-underline-offset: 2px; }
+
+/* — plain logo/image grid (e.g. Certificates page's "Tools" section: images only, no text) — */
+.tools-grid { display: flex; flex-wrap: wrap; align-items: center; gap: 28px 40px; }
+.tools-grid img { height: 56px; width: auto; max-width: 150px; object-fit: contain; }
+
+/* — 2-col project card grid (Vibe Coding page): image on top, title, then a description that
+   clamps to 3 lines with an Instagram-style "Show more"/"Show less" toggle so the grid stays
+   even height by default regardless of how long any one card's text is. */
+.vibe-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px 32px; padding: 8px 0 24px; }
+.vibe-card { display: flex; flex-direction: column; }
+.vibe-card-media { display: block; margin-bottom: 14px; }
+.vibe-card-media img { width: 100%; aspect-ratio: 16/9; object-fit: cover; border-radius: 4px; border: 1px solid #D7CCCC; display: block; }
+.vibe-card-title { display: inline-flex; align-items: baseline; gap: 5px; font-family: 'Inria Sans', sans-serif; font-weight: 700; font-size: 20px; color: #454545; text-decoration: none; text-underline-offset: 2px; }
+.vibe-card-title::after { content: "\2197"; font-size: 0.65em; font-weight: 500; color: #8c8383; transition: color 250ms cubic-bezier(0.22,0.61,0.36,1), transform 250ms cubic-bezier(0.22,0.61,0.36,1); }
+.vibe-card-title:hover { text-decoration: underline; }
+.vibe-card-title:hover::after { color: #6fae9d; transform: translate(1px, -1px); }
+.vibe-card-desc { font-family: 'Inria Sans', sans-serif; font-size: 20px; line-height: 1.3125; color: #454545; margin: 6px 0 0; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+.vibe-card-desc.is-expanded { -webkit-line-clamp: unset; overflow: visible; }
+.vibe-card-toggle { margin-top: 8px; background: none; border: none; padding: 0; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; font-family: 'Inria Sans', sans-serif; font-size: 14px; font-weight: 500; color: #6fae9d; }
+.vibe-card-toggle[hidden] { display: none; }
+.vibe-card-toggle svg { width: 10px; height: 10px; transition: transform 250ms cubic-bezier(0.22,0.61,0.36,1); }
+.vibe-card-toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+
+/* — About page: two-column "roles I've held" list, and taste-gallery grids (Books, Cinema,
+   People, Media, Other Interests, Latest) — a row of thumbnails with one shared caption. — */
+.role-columns { display: flex; gap: 40px; margin: 14px 0; }
+.role-columns ul { flex: 1; margin: 0; padding-left: 20px; font-family: 'Inria Sans', sans-serif; font-size: 18px; line-height: 1.6; color: #454545; }
+.bio-grid { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 16px; }
+.bio-grid img { height: 170px; width: auto; max-width: 260px; border-radius: 4px; border: 1px solid #D7CCCC; object-fit: cover; display: block; }
+.bio-grid iframe { width: 260px; aspect-ratio: 16/9; height: auto; border-radius: 4px; border: 1px solid #D7CCCC; display: block; }
+.bio-caption { flex-basis: 100%; font-family: 'Inria Sans', sans-serif; font-size: 16px; font-style: italic; line-height: 1.5; color: #6b6666; margin: 4px 0 0; }
+
+@media (max-width: 860px) {
+  .vibe-grid { grid-template-columns: 1fr; }
+  .role-columns { flex-direction: column; gap: 4px; }
+  /* fixed app-shell doesn't suit small screens — fall back to one normally-scrolling column */
+  html.content-page, body.content-page { height: auto; overflow: visible; display: block; }
+  .page-sidebar {
+    position: static; width: auto;
+    flex-direction: row; flex-wrap: wrap; padding: 16px 20px;
+  }
+  .page-card { width: 140px; height: 44px; font-size: 18px; line-height: 1; }
+  .page-main { width: auto; height: auto; overflow: visible; }
+  .page-main-inner { padding: 24px 20px 0; }
+  .page-item { flex-direction: column; gap: 12px; }
+  .page-item-media, .page-item--routewise .page-item-media { flex: none; width: 100%; }
+}

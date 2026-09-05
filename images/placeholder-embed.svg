@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <rect x="0.5" y="0.5" width="399" height="299" rx="8" fill="#EFEDEA" stroke="#D7CCCC"/>
+  <g transform="translate(200,138)" fill="none" stroke="#B3ABAB" stroke-width="1.6">
+    <rect x="-46" y="-34" width="92" height="68" rx="6"/>
+    <circle cx="-24" cy="-14" r="8"/>
+    <path d="M-46 20 L-16 -4 L4 14 L20 -6 L46 20" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="200" y="216" text-anchor="middle" font-family="Inria Sans, sans-serif" font-size="13" fill="#8C8383">Canva embed — placeholder</text>
+</svg>

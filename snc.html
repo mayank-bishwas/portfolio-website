@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WKKC7QHK');</script>
+<!-- End Google Tag Manager -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sticky Notes</title>
+<meta name="description" content="My Life Runs on Sticky Notes: a weekly self-tracking experiment.">
+<link rel="canonical" href="https://mayankbishwas.com/snc">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Sticky Notes">
+<meta property="og:description" content="My Life Runs on Sticky Notes: a weekly self-tracking experiment.">
+<meta property="og:url" content="https://mayankbishwas.com/snc">
+<meta property="og:image" content="https://mayankbishwas.com/images/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Sticky Notes">
+<meta name="twitter:description" content="My Life Runs on Sticky Notes: a weekly self-tracking experiment.">
+<meta name="twitter:image" content="https://mayankbishwas.com/images/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inria+Sans:ital,wght@0,400;0,700;1,400&family=Lora:wght@400;600&display=swap">
+<link rel="stylesheet" href="snc.css">
+</head>
+<body class="snc-page">
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WKKC7QHK"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<div id="snc-grain" aria-hidden="true">
+  <div class="snc-grain-layer"></div>
+</div>
+
+<header class="snc-header" id="snc-header">
+  <div class="snc-shell snc-shell--narrow snc-header-inner">
+    <a href="/" class="snc-home-link" aria-label="Home">
+      <img src="images/atom-glow.png" alt="">
+    </a>
+    <div class="snc-header-right">
+      <nav class="snc-header-nav">
+        <a href="#what-why">What &amp; Why</a>
+        <a href="#how">How</a>
+        <a href="#insights">My Insights</a>
+        <a href="#next">What&rsquo;s Next</a>
+      </nav>
+      <a href="#year-wrap" class="snc-btn snc-btn--sm">Get your <em>Year Wrap</em>!</a>
+    </div>
+  </div>
+</header>
+
+<section class="snc-hero">
+  <div class="snc-shell snc-hero-row">
+    <div class="snc-hero-copy">
+      <h1>My Life runs on Sticky Notes</h1>
+      <p>I make weekly sticky notes — for work, routine, life admin tasks, etc. — and rate myself at the end of the week, on the back of the same note. A form of journaling. Been doing it since Aug &lsquo;24 — 2 years!!</p>
+      <p>I collated it all in Claude to get insights on myself for self-improvement. And, also, to make fun animation reel&hellip; like a <em>year wrap</em> :)</p>
+      <div class="snc-hero-cta">
+        <a href="#year-wrap" class="snc-btn snc-btn--lg">Get your <em>Year Wrap</em>!</a>
+      </div>
+    </div>
+    <div class="snc-hero-graphic snc-placeholder" aria-hidden="true">image placeholder</div>
+  </div>
+
+  <div class="snc-shell snc-shell--narrow snc-hero-media-shell">
+  <div class="snc-media-wrap">
+    <div class="snc-media" id="snc-media" data-mode="scene">
+      <div class="snc-media-face snc-media-face--scene snc-scene">
+        <!-- Character prototype v1: 4 poses cross-fading on a loop, so the
+             look + transitions can be assessed before any real animation
+             timeline/data wiring. Background/world is still a placeholder;
+             per the brief, world state stays independent of character mood. -->
+        <svg class="snc-char" viewBox="0 0 220 260" role="img" aria-label="Character cycling through happy, sad, energetic, and flower-holding moods">
+          <defs>
+            <linearGradient id="charGradHappy" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="4%" stop-color="#f0e6ca"/>
+              <stop offset="100%" stop-color="#998d4f"/>
+            </linearGradient>
+            <linearGradient id="charGradSad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#c1d1f1"/>
+              <stop offset="100%" stop-color="#6f798b"/>
+            </linearGradient>
+            <linearGradient id="charGradEnergetic" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#f6b8ef"/>
+              <stop offset="100%" stop-color="#9a5aa0"/>
+            </linearGradient>
+            <linearGradient id="charGradFlower" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#d1f1c1"/>
+              <stop offset="100%" stop-color="#6f8b6f"/>
+            </linearGradient>
+            <filter id="charSoftBlur" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="2.4"/>
+            </filter>
+            <filter id="charShadowBlur" x="-100%" y="-100%" width="300%" height="300%">
+              <feGaussianBlur stdDeviation="4"/>
+            </filter>
+            <pattern id="charGrain" patternUnits="userSpaceOnUse" width="60" height="60">
+              <image href="images/grain-texture.png" width="60" height="60"/>
+            </pattern>
+          </defs>
+
+          <ellipse class="snc-char-shadow" cx="110" cy="232" rx="46" ry="9" filter="url(#charShadowBlur)"></ellipse>
+
+          <g class="snc-char-pose snc-char-pose--happy">
+            <circle class="snc-char-body" cx="110" cy="128" r="50" fill="url(#charGradHappy)" filter="url(#charSoftBlur)"></circle>
+            <circle class="snc-char-grain" cx="110" cy="128" r="50" fill="url(#charGrain)" filter="url(#charSoftBlur)"></circle>
+            <g class="snc-char-limbs">
+              <path d="M72,108 L55,140 L48,170"></path>
+              <path d="M148,108 L165,140 L172,170"></path>
+              <path d="M90,178 L85,230"></path>
+              <path d="M130,178 L135,230"></path>
+            </g>
+            <g class="snc-char-face">
+              <circle cx="95" cy="118" r="4"></circle>
+              <circle cx="125" cy="118" r="4"></circle>
+              <path d="M95,138 Q110,150 125,138"></path>
+            </g>
+          </g>
+
+          <g class="snc-char-pose snc-char-pose--sad">
+            <g transform="rotate(-6 110 160)">
+              <circle class="snc-char-body" cx="110" cy="128" r="50" fill="url(#charGradSad)" filter="url(#charSoftBlur)"></circle>
+              <circle class="snc-char-grain" cx="110" cy="128" r="50" fill="url(#charGrain)" filter="url(#charSoftBlur)"></circle>
+              <g class="snc-char-limbs">
+                <path d="M68,110 L60,150 L58,185"></path>
+                <path d="M145,110 L150,150 L150,185"></path>
+                <path d="M95,178 L92,230"></path>
+                <path d="M122,178 L120,230"></path>
+              </g>
+              <g class="snc-char-face">
+                <circle cx="90" cy="120" r="3.6"></circle>
+                <circle cx="112" cy="120" r="3.6"></circle>
+                <path d="M92,140 Q106,130 120,140"></path>
+              </g>
+            </g>
+          </g>
+
+          <g class="snc-char-pose snc-char-pose--energetic">
+            <g transform="rotate(6 110 160)">
+              <circle class="snc-char-body" cx="110" cy="128" r="50" fill="url(#charGradEnergetic)" filter="url(#charSoftBlur)"></circle>
+              <circle class="snc-char-grain" cx="110" cy="128" r="50" fill="url(#charGrain)" filter="url(#charSoftBlur)"></circle>
+              <g class="snc-char-limbs">
+                <path d="M72,108 L60,75 L52,50"></path>
+                <path d="M150,108 L175,120 L190,115"></path>
+                <path d="M85,178 L70,225"></path>
+                <path d="M132,178 L150,220"></path>
+              </g>
+              <g class="snc-char-face">
+                <circle cx="100" cy="116" r="5"></circle>
+                <circle cx="128" cy="116" r="5"></circle>
+                <ellipse cx="114" cy="140" rx="5" ry="6" class="snc-char-mouth-open"></ellipse>
+              </g>
+            </g>
+          </g>
+
+          <g class="snc-char-pose snc-char-pose--flower">
+            <circle class="snc-char-body" cx="110" cy="128" r="50" fill="url(#charGradFlower)" filter="url(#charSoftBlur)"></circle>
+            <circle class="snc-char-grain" cx="110" cy="128" r="50" fill="url(#charGrain)" filter="url(#charSoftBlur)"></circle>
+            <g class="snc-char-limbs">
+              <path d="M72,108 L58,145 L50,175"></path>
+              <path d="M148,108 L140,140 L118,150"></path>
+              <path d="M90,178 L85,230"></path>
+              <path d="M130,178 L135,230"></path>
+            </g>
+            <g class="snc-char-face">
+              <circle cx="95" cy="118" r="4"></circle>
+              <circle cx="125" cy="118" r="4"></circle>
+              <path d="M95,138 Q110,150 125,138"></path>
+            </g>
+            <g class="snc-char-prop">
+              <line x1="118" y1="150" x2="118" y2="168"></line>
+              <circle cx="118" cy="147" r="4.5" class="snc-char-flower-center"></circle>
+              <ellipse cx="110" cy="140" rx="4.5" ry="6" class="snc-char-flower-petal"></ellipse>
+              <ellipse cx="126" cy="140" rx="4.5" ry="6" class="snc-char-flower-petal"></ellipse>
+              <ellipse cx="118" cy="134" rx="6" ry="4.5" class="snc-char-flower-petal"></ellipse>
+              <ellipse cx="112" cy="150" rx="5" ry="4" class="snc-char-flower-petal"></ellipse>
+              <ellipse cx="124" cy="150" rx="5" ry="4" class="snc-char-flower-petal"></ellipse>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="snc-media-face snc-media-face--story snc-story">
+        <div class="snc-story-nav">
+          <span class="snc-story-arrow snc-story-arrow--prev" role="button" aria-label="Previous story"></span>
+          <h3 class="snc-story-title">The Lighthouse Keeper&rsquo;s Last Call (11/&lsquo;25)</h3>
+          <span class="snc-story-arrow snc-story-arrow--next" role="button" aria-label="Next story"></span>
+        </div>
+        <div class="snc-story-body">
+          <p>Arthur adjusted the brass dial on the wireless radio. Outside, the North Atlantic smashed against the granite base of Blackwood Light, sending shuddering vibrations through the stone floor.</p>
+          <p>For forty years, Arthur had been the voice in the dark. He kept the generator humming, the lenses polished, and the foghorn bellowing its mechanical groan through every gale.</p>
+          <p>Placeholder story text — the real week&rsquo;s third-person story will render here once the shared timeline cursor and dataset are wired up.</p>
+        </div>
+      </div>
+      <div class="snc-score-card">
+        <div class="snc-score-date">mm/dd/yyyy <b>4.5/5</b></div>
+        <div>Philosophy: 4.5/5</div>
+        <div>Philosophy: 4.5/5</div>
+        <div>Philosophy: 4.5/5</div>
+        <div>Philosophy: 4.5/5</div>
+        <div>Philosophy: 4.5/5</div>
+        <div>Philosophy: 4.5/5</div>
+      </div>
+    </div>
+
+    <div class="snc-controls">
+      <button class="snc-toggle" id="snc-toggle" data-active="scene" type="button" aria-label="Toggle scene / story">
+        <span class="snc-toggle-opt snc-toggle-opt--scene" data-set="scene" aria-hidden="true">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="5" width="15" height="14" rx="2"></rect><path d="m17 10 5-3v10l-5-3"></path></svg>
+        </span>
+        <span class="snc-toggle-opt snc-toggle-opt--story" data-set="story" aria-hidden="true">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="18" x2="14" y2="18"></line></svg>
+        </span>
+      </button>
+      <button class="snc-play" type="button" aria-label="Play">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l15 8-15 8z"></path></svg>
+      </button>
+      <span class="snc-timestamp">00:00 / 04:00</span>
+    </div>
+
+    <div class="snc-scrubber">
+      <div class="snc-scrubber-track">
+        <span class="snc-scrubber-handle" style="left:6%" aria-hidden="true"></span>
+        <span class="snc-scrubber-star" style="left:95%" aria-hidden="true">&#9733;</span>
+      </div>
+      <div class="snc-scrubber-labels">
+        <span>Aug &lsquo;24</span>
+        <span>Jul &lsquo;26</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="snc-media-cta">
+    <a href="#year-wrap" class="snc-btn snc-btn--lg">Get your <em>Year Wrap</em>!</a>
+  </div>
+  </div>
+</section>
+
+<section class="snc-shell snc-section snc-section--center" id="what-why">
+  <h2>What &amp; Why?</h2>
+  <p class="snc-quote">&ldquo;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.&rdquo;</p>
+  <a href="/about" class="snc-link">Read about Mayank &gt;</a>
+</section>
+
+<section class="snc-shell snc-section" id="how">
+  <h2>How</h2>
+  <div class="snc-how-grid">
+    <ol class="snc-how-list" id="snc-how-list">
+      <li class="is-active" data-step="0">Lorem Ipsum</li>
+      <li data-step="1">Lorem Ipsum</li>
+      <li data-step="2">Lorem Ipsum</li>
+      <li data-step="3">Lorem Ipsum</li>
+      <li data-step="4">Lorem Ipsum</li>
+    </ol>
+    <div class="snc-how-panel">
+      <div class="snc-how-image snc-placeholder" id="snc-how-image" aria-hidden="true">image placeholder (step 1)</div>
+      <p class="snc-how-caption" id="snc-how-caption">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi. (step 1)</p>
+    </div>
+  </div>
+</section>
+
+<section class="snc-shell snc-section snc-section--center" id="insights">
+  <h2>My Insights</h2>
+  <p class="snc-section-intro">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</p>
+  <div class="snc-insights-grid">
+    <div class="snc-insight-card">
+      <div class="snc-insight-card-frame">
+        <p class="snc-insight-caption-top">Lorem ipsum dolor sit amet elit</p>
+        <div class="snc-insight-image snc-placeholder" aria-hidden="true">contribution calendar placeholder</div>
+        <div class="snc-insight-image snc-placeholder" aria-hidden="true">image placeholder</div>
+      </div>
+      <p class="snc-insight-caption-bottom">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+    </div>
+    <div class="snc-insight-card">
+      <div class="snc-insight-card-frame">
+        <p class="snc-insight-caption-top">Lorem ipsum dolor sit amet elit</p>
+        <div class="snc-insight-image snc-placeholder" aria-hidden="true">line graph placeholder</div>
+        <div class="snc-insight-image snc-placeholder" aria-hidden="true">image placeholder</div>
+      </div>
+      <p class="snc-insight-caption-bottom">Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+    </div>
+  </div>
+</section>
+
+<section class="snc-shell snc-section snc-section--center" id="next">
+  <h2>What&rsquo;s Next?</h2>
+  <p class="snc-section-intro">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.</p>
+  <a href="https://tinyurl.com/PortfolioMBishwas" target="_blank" rel="noopener" class="snc-link">See my full range of work &gt;</a>
+</section>
+
+<div class="snc-shell snc-cta-wrap">
+  <div class="snc-cta-banner-inner" id="year-wrap">
+    <div class="snc-cta-banner-copy">
+      <h3>Want a Year Wrap for Yourself?</h3>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    </div>
+    <a href="#year-wrap" class="snc-btn snc-btn--lg">Get your <em>Year Wrap</em>!</a>
+  </div>
+</div>
+
+<footer class="snc-footer">
+  <div class="snc-shell snc-shell--narrow snc-footer-grid">
+    <div class="snc-footer-main">
+      <p class="snc-footer-title">My Life Runs on Sticky Notes</p>
+      <p class="snc-footer-desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      <div class="snc-footer-icons">
+        <a href="mailto:mayankbishwas@gmail.com" aria-label="Email" class="snc-footer-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+        </a>
+        <a href="https://www.linkedin.com/in/mayankbishwas/" target="_blank" rel="noopener" aria-label="LinkedIn" class="snc-footer-icon">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-10h4v1.5"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+        </a>
+        <a href="https://www.instagram.com/mayank_bishwas/" target="_blank" rel="noopener" aria-label="Instagram" class="snc-footer-icon">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        </a>
+        <a href="https://x.com/Mayank_Bishwas" target="_blank" rel="noopener" aria-label="X" class="snc-footer-icon">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="3"></rect><path d="m7 7 10 10M17 7 7 17"></path></svg>
+        </a>
+        <a href="https://github.com/mayank-bishwas" target="_blank" rel="noopener" aria-label="GitHub" class="snc-footer-icon">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.1-.5 2V21"></path></svg>
+        </a>
+      </div>
+    </div>
+    <div class="snc-footer-links">
+      <div>
+        <h4>Key Links</h4>
+        <ul class="snc-footer-list">
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="https://tinyurl.com/PortfolioMBishwas" target="_blank" rel="noopener">Portfolio</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Other Tools by Mayank</h4>
+        <ul class="snc-footer-list">
+          <li><a href="https://survey8b.com" target="_blank" rel="noopener">AI Audience Simulator</a></li>
+          <li><a href="https://imagealtai.com" target="_blank" rel="noopener">Alt Tag Generator</a></li>
+          <li><a href="https://querycat.app/" target="_blank" rel="noopener">Query-fanout explorer</a></li>
+          <li><a href="https://joinmoltbook.com" target="_blank" rel="noopener">Join Moltbook without coding</a></li>
+          <li><a href="https://sirenhunter.com/" target="_blank" rel="noopener">Scavenger Hunt Game in G-Map</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Header: fully transparent at rest so it blends into the hero; gains the
+  // translucent+blurred band only once you've scrolled past 10px, which is
+  // what makes it read as "now it's sticking" rather than always-on.
+  var header = document.getElementById('snc-header');
+  function updateHeaderScrollState() {
+    header.classList.toggle('is-scrolled', window.scrollY > 10);
+  }
+  window.addEventListener('scroll', updateHeaderScrollState, { passive: true });
+  updateHeaderScrollState();
+
+  // Toggle switch: swaps the SAME media box between scene and story faces —
+  // both share one scrubber underneath (no separate story section/logic yet).
+  var toggle = document.getElementById('snc-toggle');
+  var media = document.getElementById('snc-media');
+  toggle.addEventListener('click', function () {
+    var next = media.getAttribute('data-mode') === 'scene' ? 'story' : 'scene';
+    media.setAttribute('data-mode', next);
+    toggle.setAttribute('data-active', next);
+  });
+
+  // How section: clicking a step highlights it and swaps the image+caption
+  // panel on the right — placeholder copy per step, real content comes later.
+  var howList = document.getElementById('snc-how-list');
+  var howImage = document.getElementById('snc-how-image');
+  var howCaption = document.getElementById('snc-how-caption');
+  howList.addEventListener('click', function (e) {
+    var li = e.target.closest('li[data-step]');
+    if (!li) return;
+    howList.querySelectorAll('li').forEach(function (item) {
+      item.classList.toggle('is-active', item === li);
+    });
+    var step = Number(li.getAttribute('data-step')) + 1;
+    howImage.textContent = 'image placeholder (step ' + step + ')';
+    howCaption.textContent = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi. (step ' + step + ')';
+  });
+</script>
+</body>
+</html>

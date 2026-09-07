@@ -1,56 +1,32 @@
-/* SNC — "My Life Runs on Sticky Notes" — standalone stylesheet.
-   Not linked to style.css. Colors/type here are taken from the Figma file
-   "Portfolio — SNC" (node 27:535), reconciled by hand with the portfolio's
-   own type scale — not a live link, so re-check both sides once merged. */
+/* SNC — "Coming Soon" interim page. Standalone stylesheet, not linked to
+   style.css. Values taken directly from the Figma frame "Coming Soon - SNC"
+   (node 138:336). The full animated SNC build lives in snc-dev.html/
+   snc-dev.css and will replace this file once it's ready — see that pair
+   for the in-progress work. */
 
 :root {
-  /* — palette, read from the Figma frame — */
-  --color-bg: #2e2e2e;
-  --color-text: #ffffff;
-  --color-text-muted: #b3b3b3;
-  --color-text-soft: #eee9e9;
-  --color-divider: rgba(255,255,255,0.14);
+  --color-text: #fafafa;
+  --color-text-soft: #d5d0b0;
+  --color-text-muted: rgba(250,250,250,0.6);
 
-  /* the story-mode panel intentionally reuses the *light* portfolio palette
-     (style.css's --color-bg/#454545 text) — the visual cue that reading a
-     story briefly steps into the "paper" world the rest of the site lives in */
-  --color-story-bg: #f3f2f2;
-  --color-story-text: #454545;
-  --color-story-border: rgba(211,208,208,0.83);
+  /* same word-mark gradient as style.css's .nav-link:hover / .byline-name:hover
+     on the homepage — here it's the resting state, not a hover reveal */
+  --gradient-heading: linear-gradient(96deg, #6fae9d 0%, #b9bd6a 38%, #7fb8c2 72%, #a89a6a 100%);
+  --gradient-cta: linear-gradient(104deg, #f0e6ca 4%, #998d4f 104%);
 
   --color-glass-bg: rgba(197,189,189,0.35);
   --color-glass-border: rgba(0,0,0,0.13);
   --color-placeholder: #d9d9d9;
 
-  --gradient-cta: linear-gradient(100deg, #f0e6ca 4%, #998d4f 104%);
-  --color-accent-text: #e1cf9a;
-
   --font-display: "Instrument Serif", serif;
   --font-ui: "Inria Sans", sans-serif;
-  --font-body: "Lora", system-ui, sans-serif;
 
-  --space-1: 4.6px;
   --space-2: 9.2px;
   --space-3: 13.8px;
   --space-4: 18.4px;
   --space-6: 27.6px;
   --space-8: 36.8px;
-  --space-10: 46px;
-  --space-14: 64.4px;
 
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 12px;
-
-  --shadow-card: -2px 2px 2px 0px rgba(0,0,0,0.2);
-
-  /* uniform spacing rule: gaps between elements inside a section all use
-     --gap-el; the gap between two sections is 180px, sitewide */
-  --gap-el: 20px;
-  --gap-section: 180px;
-  /* 180px is the DEFAULT page margin (hero, What&Why, How, Insights, CTA
-     banner). 90px is the exception, used only by the header, the media/
-     scrubber block, and the footer — see .snc-shell--narrow. */
   --margin-x: 180px;
   --margin-narrow: 90px;
 }
@@ -58,35 +34,19 @@
 *, *::before, *::after { box-sizing: border-box; }
 
 html, body { margin: 0; padding: 0; }
+html { background: #2a2a2a; }
 body {
-  /* echoes the homepage's soft radial backdrop glow, desaturated/darkened
-     for SNC rather than a flat fill */
+  min-height: 100vh;
+  /* same dark radial glow + grain texture as snc-dev.css, for visual
+     continuity with the full build this page stands in for */
   background: radial-gradient(ellipse 1400px 900px at 50% -6%, #3c3c3c 0%, #313131 45%, #2a2a2a 100%) fixed;
   color: var(--color-text);
-  font-family: var(--font-body);
+  font-family: var(--font-ui);
   font-size: 15px;
-  /* matches style.css's own body line-height (1.55) rather than an
-     invented looser value */
   line-height: 1.55;
 }
-h1, h2, h3, h4 {
-  font-family: var(--font-display);
-  font-weight: 400;
-  line-height: 1.1;
-  margin: 0 0 var(--space-3);
-  color: var(--color-text);
-}
-p { margin: 0 0 var(--space-3); }
-a { color: inherit; text-decoration: none; }
-img { display: block; max-width: 100%; }
-button { font: inherit; }
 
-::selection { background: color-mix(in srgb, #998d4f 30%, transparent); }
-*:focus-visible { outline: 2px solid #998d4f; outline-offset: 3px; }
-
-/* — paper grain, same technique and asset as the homepage's #grain (see
-   index.html/style.css) — two drifting layers, blended so the texture reads
-   against a dark ground instead of the homepage's light one — */
+/* — paper grain, same technique/asset as snc-dev.css and the homepage — */
 @keyframes sncGrainDriftA {
   0%   { transform: translate3d(0, 0, 0) scale(1.05); opacity: 0.5; }
   33%  { transform: translate3d(-16px, 9px, 0) scale(1.08); opacity: 0.32; }
@@ -99,447 +59,185 @@ button { font: inherit; }
   75%  { transform: translate3d(-9px, 8px, 0) scale(1.07); opacity: 0.36; }
   100% { transform: translate3d(0, 0, 0) scale(1.09); opacity: 0.3; }
 }
-#snc-grain {
-  position: fixed; inset: 0; pointer-events: none; z-index: 5;
-  mix-blend-mode: overlay;
-}
-.snc-grain-layer {
-  position: absolute; inset: -90px;
-  background-image: url("images/grain-texture.png");
-  background-repeat: repeat;
-}
+#snc-grain { position: fixed; inset: 0; pointer-events: none; z-index: 5; mix-blend-mode: overlay; }
+.snc-grain-layer { position: absolute; inset: -90px; background-image: url("images/grain-texture.png"); background-repeat: repeat; }
 .snc-grain-layer--a { background-size: 256px 256px; animation: sncGrainDriftA 34s ease-in-out infinite; }
 .snc-grain-layer--b { background-size: 172px 172px; animation: sncGrainDriftB 47s ease-in-out infinite; }
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.1;
+  margin: 0;
+  color: var(--color-text);
+}
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
 
-/* — layout shell — */
+::selection { background: color-mix(in srgb, #998d4f 30%, transparent); }
+*:focus-visible { outline: 2px solid #998d4f; outline-offset: 3px; }
+
 .snc-page { overflow-x: hidden; }
 .snc-shell {
   width: 100%; max-width: 1600px; margin: 0 auto;
   padding: 0 var(--margin-x);
 }
-/* the three confirmed exceptions to the 180px default: header, the media/
-   scrubber block, and the footer all sit at 90px instead */
 .snc-shell--narrow { padding: 0 var(--margin-narrow); }
 
-/* — buttons: the recurring cream-to-olive "Get your Year Wrap!" pill — */
+/* — above-the-fold wrapper: header + title + hero + CTA all fit one screen
+     on desktop, no scrolling required to see them — only the footer sits
+     below and needs a scroll. The logo is just a small floating mark, not a
+     layout-affecting header bar — it's taken out of flow (absolute) so the
+     {title, hero, CTA} group centers against the true top of the viewport,
+     not against "below the header". — */
+.snc-above-fold {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.snc-header {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 10;
+}
+
+/* — header: just the home mark, nothing else on this interim page — */
+/* matches style.css's .site-header (14px padding) / .site-header-home img
+   (26px) used on the rest of the site — same size and inset, just a white
+   recolor of the same mark since this page's background is dark, not the
+   light `#fbfbfb` the original glow version was designed against */
+.snc-header-inner { display: flex; align-items: center; padding-top: 14px; padding-bottom: 14px; }
+.snc-home-link { display: block; margin-top: 20px; transition: transform 400ms cubic-bezier(0.22,0.61,0.36,1); }
+.snc-home-link img { display: block; height: 39px; width: auto; }
+.snc-home-link:hover { transform: scale(1.06); }
+.snc-home-link:active { transform: scale(0.95); }
+
+/* — "Coming Soon" title block — */
+.snc-coming-soon { text-align: center; padding-top: clamp(8px, 2vh, 20px); padding-bottom: clamp(32px, 6vh, 64px); }
+.snc-coming-soon h1 {
+  font-family: var(--font-ui); font-weight: 700; font-size: clamp(40px, 6vw, 80px);
+  background-image: var(--gradient-heading);
+  background-size: 300% 100%;
+  filter: saturate(1.35) brightness(1.08);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  text-shadow: 0 2px 2px rgba(0,0,0,0.12);
+  margin-bottom: var(--space-3);
+  /* continuous, uninteracted flow through the gradient — always on, not a
+     hover reveal like the homepage's nav-link/byline treatment */
+  animation: sncHeadingDrift 5s ease-in-out infinite;
+}
+@keyframes sncHeadingDrift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.snc-coming-soon-notify {
+  display: inline-block; font-size: 22px; color: var(--color-text-soft);
+  border-bottom: 1px solid transparent;
+  transition: border-color 300ms ease;
+}
+.snc-coming-soon-notify:hover { border-bottom-color: currentColor; }
+
+/* — hero: sticky-note copy + real photos — */
+.snc-hero-row {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-8);
+  flex-wrap: wrap;
+}
+.snc-hero-copy { flex: 1 1 400px; max-width: 496px; display: flex; flex-direction: column; gap: clamp(10px, 1.6vh, 18.4px); }
+.snc-hero-copy h2 { font-size: clamp(32px, 4.6vh, 48px); }
+.snc-hero-copy p { font-size: clamp(15px, 2vh, 20px); }
+
+.snc-hero-photos {
+  /* no overflow:hidden — the opacity fade is what hides each item, so
+     nothing ever needs to be hard-clipped by a container edge */
+  position: relative; flex: 0 0 auto;
+  width: clamp(520px, 60vh, 680px); aspect-ratio: 680 / 280;
+  margin-left: -300px;
+}
+
+/* — a simple 3-up round-robin carousel, one item on screen at a time:
+     sticky-2 slides left→right and out, then sticky-1 slides left→right and
+     out, then the ghost (facing the other way) slides right→left and out —
+     then it loops. `left` (not transform) drives the slide so each image's
+     own static rotate/flip can stay independent of the motion. Fades happen
+     well inside the visible area (not at the container's clipped edge), so
+     items dissolve in/out rather than getting cut off. — */
+.snc-hero-photo--a, .snc-hero-photo--b, .snc-hero-ghost {
+  position: absolute; top: 9%; height: 82%; width: auto; max-width: none;
+}
+.snc-hero-photo--a, .snc-hero-photo--b {
+  mix-blend-mode: luminosity;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,0.4));
+}
+/* image slots swapped: sticky-2 now plays first, sticky-1 second */
+.snc-hero-photo--a { transform: rotate(9deg); animation: sncCarouselImg2 12s ease-in-out infinite; }
+.snc-hero-photo--b { transform: rotate(-6deg); animation: sncCarouselImg1 12s ease-in-out infinite; }
+/* mirrored to face left (travels right-to-left), and 50% shorter than the
+   sticky photos */
+.snc-hero-ghost { height: 41%; filter: drop-shadow(0 8px 14px rgba(0,0,0,0.35)); animation: sncCarouselGhost 12s ease-in-out infinite; }
+
+/* fades complete with margin to spare before the item's edge would reach the
+   container's clip line (92%/-5%, not 100%/0%) — so it dissolves rather than
+   getting sliced by the overflow:hidden boundary. Long, gradual ramps (10%
+   of the phase each way) instead of a quick 8% blip. */
+@keyframes sncCarouselImg1 {
+  0% { opacity: 0; left: -5%; }
+  10% { opacity: 1; left: 22%; }
+  23% { opacity: 1; left: 62%; }
+  33%, 100% { opacity: 0; left: 92%; }
+}
+@keyframes sncCarouselImg2 {
+  0%, 33% { opacity: 0; left: -5%; }
+  43% { opacity: 1; left: 22%; }
+  56% { opacity: 1; left: 62%; }
+  66%, 100% { opacity: 0; left: 92%; }
+}
+/* right-to-left with a sinusoidal bob (translateY zigzag) layered on top of
+   the static horizontal flip — a wave, not a straight line */
+@keyframes sncCarouselGhost {
+  0%, 66% { opacity: 0; left: 92%; transform: scaleX(-1) translateY(0); }
+  70% { opacity: 0.6; left: 82%; transform: scaleX(-1) translateY(-10px); }
+  76% { opacity: 1; left: 65%; transform: scaleX(-1) translateY(8px); }
+  82% { opacity: 1; left: 48%; transform: scaleX(-1) translateY(-10px); }
+  88% { opacity: 1; left: 30%; transform: scaleX(-1) translateY(8px); }
+  94% { opacity: 0.4; left: 12%; transform: scaleX(-1) translateY(-6px); }
+  100% { opacity: 0; left: -5%; transform: scaleX(-1) translateY(0); }
+}
+
+/* — CTA — */
 .snc-btn {
-  display: inline-flex; align-items: baseline; gap: 4px;
-  font-family: var(--font-display); font-size: 17px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 20px;
   color: #1a1a1a;
   background: var(--gradient-cta);
-  border: none; border-radius: 999px;
-  padding: 11px 26px;
+  border: none; border-radius: 20px;
+  padding: 16px 34px;
   cursor: pointer; white-space: nowrap;
   transition: transform 300ms cubic-bezier(0.22,0.61,0.36,1), box-shadow 300ms ease;
 }
 .snc-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.35); }
-.snc-btn em { font-style: italic; }
-.snc-btn--sm { font-size: 13px; padding: 7px 18px; }
-.snc-btn--lg { font-size: 21px; padding: 15px 32px; }
+/* same --margin-x shell as the title/hero blocks above it, not a different
+   (narrower) inset — keeps all three blocks sharing one true center line.
+   Top padding doubled per the "2x the button's top margin" note. */
+.snc-cta-row { display: flex; justify-content: center; padding-top: clamp(32px, 6vh, 64px); padding-bottom: clamp(24px, 5vh, 56px); }
 
-/* — header — */
-/* a floating pill: 10px inset on every side (top via the sticky offset,
-   left/right via margin, and the rounded ends read as the "bottom" of that
-   same 10px logic), curved left/right ends. Fully transparent at rest so it
-   blends invisibly into the hero; a small scroll listener (see snc.html)
-   adds .is-scrolled past 10px of scroll, which is what actually paints the
-   translucent+blurred pill — that fade-in is what reads as "now it's
-   sticking", the floating shape is there from the start either way. */
-.snc-header {
-  position: sticky; top: 10px; z-index: 40;
-  margin: 0 10px;
-  border-radius: 16px;
-  overflow: hidden;
-  background: rgba(42,42,42,0);
-  -webkit-backdrop-filter: blur(0px);
-  backdrop-filter: blur(0px);
-  transition: background 300ms ease, backdrop-filter 300ms ease;
-}
-.snc-header.is-scrolled {
-  background: rgba(42,42,42,0.7);
-  -webkit-backdrop-filter: blur(10px);
-  backdrop-filter: blur(10px);
-}
-.snc-header-inner {
-  display: flex; align-items: center; justify-content: space-between;
-  /* ~20% shorter than the standard --gap-el padding, so the whole band is
-     a noticeably slimmer bar than the rest of the page's spacing rhythm */
-  padding-top: 13px; padding-bottom: 13px;
-}
-.snc-header-right { display: flex; align-items: center; gap: var(--space-6); }
-.snc-header-nav { display: flex; align-items: center; gap: var(--space-4); }
-.snc-header-nav a {
-  font-family: var(--font-ui); font-size: 13px; color: var(--color-text-muted);
-  transition: color 250ms ease;
-}
-.snc-header-nav a:hover { color: var(--color-accent-text); }
-/* same home-mark asset as the rest of the site (index.html's
-   .site-header-home), but its actual dark green/gold colors disappear
-   against this page's dark bg — brightness(0) invert(1) turns any opaque
-   pixel white (a CSS-only recolor, no second image asset needed) */
-.snc-home-link { display: block; }
-.snc-home-link img {
-  display: block; height: 44px; width: auto;
-  filter: brightness(0) invert(1) drop-shadow(0 2px 6px rgba(0,0,0,0.4));
-  transition: transform 500ms cubic-bezier(0.22,0.61,0.36,1);
-}
-.snc-home-link:hover img { transform: scale(1.08); }
-.snc-home-link:active img { transform: scale(0.94); }
-
-/* — hero — */
-/* 60px less than the standard section gap — pulls the hero row up closer to
-   the header without touching the media block's own (independent) gap below */
-.snc-hero { padding-top: calc(var(--gap-section) - 60px); }
-/* the media/scrubber block breaks out to the narrower 90px shell, so it
-   needs its own top gap independent of the hero-row's 180px shell above it */
-.snc-hero-media-shell { margin-top: var(--gap-section); }
-.snc-hero-row {
-  display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-8);
-}
-.snc-hero-copy { flex: 1; max-width: 620px; display: flex; flex-direction: column; gap: var(--gap-el); }
-.snc-hero-copy p { margin: 0; }
-/* 50% larger than the homepage's .byline-name (38px) — a deliberate,
-   bigger display moment for SNC's own hero, not a like-for-like match */
-.snc-hero h1 { font-size: 57px; margin: 0; }
-/* body copy line-height matches style.css's .bio p (1.3125) — tighter than
-   the page's own base line-height, since this is a dense multi-line block */
-/* widened from 560 so the two paragraphs wrap to 5 lines total instead of 7 */
-.snc-hero p { font-family: var(--font-ui); font-size: 20px; line-height: 1.3125; color: var(--color-text); max-width: 620px; }
-/* 2x the standard element gap (--gap-el already spaces it once via the
-   flex column's own gap; this adds a second one on top) */
-.snc-hero-cta { margin-top: var(--gap-el); }
-
-.snc-hero-graphic {
-  flex: none; width: 220px; aspect-ratio: 1 / 1;
-}
-
-/* — shared media block: the toggle swaps this box between "scene" and "story",
-     and one scrubber underneath drives both — that's the whole point, so the
-     box itself must be a single shared element, not two stacked sections. — */
-.snc-media-wrap { margin-top: 0; }
-.snc-media {
-  position: relative;
-  width: 100%; aspect-ratio: 1403 / 590;
-  border-radius: var(--radius-md);
-  overflow: hidden;
-}
-.snc-media-face {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  transition: opacity 260ms ease;
-}
-.snc-media[data-mode="scene"] .snc-media-face--story,
-.snc-media[data-mode="story"] .snc-media-face--scene {
-  opacity: 0; pointer-events: none;
-}
-
-/* scene face */
-.snc-scene {
-  background: linear-gradient(180deg, #274b7a 0%, #3f7ab0 42%, #4d8b58 42%, #2f5c39 100%);
-  color: rgba(255,255,255,0.7);
-  font-family: var(--font-ui); font-size: 13px; text-align: center;
-}
-
-/* — character prototype v1 — soft blurred gradient-and-grain body (mood
-     drives the gradient), single-line stick limbs kept crisp, minimal face,
-     4 poses cross-fading on a loop. Reuses the same gradient/grain/glow
-     recipe as the homepage's project cards and atom-glow object — see the
-     plan doc for the full reasoning. — */
-.snc-char { width: 200px; height: auto; max-width: 55%; overflow: visible; }
-.snc-char-shadow { fill: rgba(0,0,0,0.35); }
-.snc-char-grain { opacity: 0.18; mix-blend-mode: multiply; }
-.snc-char-limbs path {
-  fill: none; stroke: #2b2b2b; stroke-width: 3;
-  stroke-linecap: round; stroke-linejoin: round;
-}
-.snc-char-face circle { fill: #2b2b2b; }
-.snc-char-face path {
-  fill: none; stroke: #2b2b2b; stroke-width: 2.5; stroke-linecap: round;
-}
-.snc-char-mouth-open { fill: #2b2b2b; }
-.snc-char-prop line { stroke: #4a7a3a; stroke-width: 2.5; stroke-linecap: round; }
-.snc-char-flower-center { fill: #f2c14e; }
-.snc-char-flower-petal { fill: #f2789f; }
-
-/* each pose is a fully-drawn group; only opacity is animated, so the
-   crossfade is simple and robust rather than tweening limb angles */
-.snc-char-pose { opacity: 0; }
-.snc-char-pose--happy { animation: charPoseHappy 12s linear infinite; }
-.snc-char-pose--sad { animation: charPoseSad 12s linear infinite; }
-.snc-char-pose--energetic { animation: charPoseEnergetic 12s linear infinite; }
-.snc-char-pose--flower { animation: charPoseFlower 12s linear infinite; }
-
-@keyframes charPoseHappy {
-  0%, 20% { opacity: 1; }
-  25%, 95% { opacity: 0; }
-  100% { opacity: 1; }
-}
-@keyframes charPoseSad {
-  0%, 20%, 100% { opacity: 0; }
-  25%, 45% { opacity: 1; }
-  50% { opacity: 0; }
-}
-@keyframes charPoseEnergetic {
-  0%, 45%, 100% { opacity: 0; }
-  50%, 70% { opacity: 1; }
-  75% { opacity: 0; }
-}
-@keyframes charPoseFlower {
-  0%, 70%, 100% { opacity: 0; }
-  75%, 95% { opacity: 1; }
-}
-
-/* story face — reuses the light portfolio palette, on purpose */
-.snc-story {
-  background: var(--color-story-bg);
-  border: 2px solid var(--color-story-border);
-  color: var(--color-story-text);
-  flex-direction: column;
-  align-items: stretch; justify-content: flex-start;
-  padding: var(--space-4) clamp(20px, 5vw, 90px);
-  overflow-y: auto;
-}
-.snc-story-nav {
-  display: flex; align-items: center; justify-content: center; gap: var(--space-4);
-  margin-bottom: var(--space-3); flex: none;
-}
-.snc-story-arrow {
-  width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent;
-  cursor: pointer; flex: none;
-}
-.snc-story-arrow--prev { border-right: 11px solid var(--color-story-text); }
-.snc-story-arrow--next { border-left: 11px solid var(--color-story-text); }
-.snc-story-title { font-family: var(--font-ui); font-size: 19px; text-align: center; }
-.snc-story-body { font-family: var(--font-ui); font-size: 14px; line-height: 1.6; }
-.snc-story-body p { margin: 0 0 var(--space-2); }
-
-/* score card, overlaid bottom-left of the shared media box in both modes —
-   text color flips for contrast against whichever face is showing */
-.snc-score-card {
-  position: absolute; left: 16px; bottom: 16px; z-index: 2;
-  width: 118px;
-  background: var(--color-glass-bg);
-  border: 1px solid var(--color-glass-border);
-  border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-card);
-  padding: 8px 10px;
-  font-family: var(--font-ui); font-size: 9px; line-height: 1.9;
-  color: #fcfcfc;
-}
-.snc-media[data-mode="story"] .snc-score-card { color: var(--color-story-text); }
-.snc-score-date { font-weight: 700; font-size: 11px; margin-bottom: 2px; }
-.snc-score-date b { font-size: 13px; float: right; }
-
-/* controls row: toggle switch — play — timestamp */
-.snc-controls {
-  margin-top: var(--space-3);
-  display: flex; align-items: center; justify-content: center; gap: var(--space-4);
-  position: relative;
-}
-.snc-toggle {
-  position: absolute; left: 0; top: 50%; transform: translateY(-50%);
-  display: inline-flex; align-items: center; gap: 4px;
-  background: #fff; border-radius: 999px; padding: 4px;
-  cursor: pointer; border: none;
-}
-.snc-toggle-opt {
-  width: 30px; height: 30px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  color: #9b9797; transition: background 250ms ease, color 250ms ease;
-}
-.snc-toggle[data-active="scene"] .snc-toggle-opt--scene,
-.snc-toggle[data-active="story"] .snc-toggle-opt--story {
-  background: var(--color-bg); color: #fff;
-}
-.snc-play {
-  width: 44px; height: 44px; border-radius: 50%;
-  background: transparent; border: 1.5px solid var(--color-text);
-  color: var(--color-text);
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-}
-.snc-timestamp {
-  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
-  font-family: var(--font-ui); font-size: 11px; color: var(--color-text-muted);
-}
-
-/* scrubber */
-.snc-scrubber { margin-top: var(--gap-el); }
-.snc-scrubber-track {
-  position: relative; height: 8px; background: #f5f2f2; border-radius: 6px;
-}
-.snc-scrubber-tick {
-  position: absolute; top: 100%; width: 1px; height: 8px; background: rgba(255,255,255,0.35);
-}
-.snc-scrubber-handle {
-  position: absolute; top: 50%; width: 18px; height: 18px; border-radius: 50%;
-  background: var(--color-text); transform: translate(-50%, -50%);
-  box-shadow: 0 0 0 4px rgba(255,255,255,0.18);
-}
-.snc-scrubber-star {
-  position: absolute; top: 50%; transform: translate(-50%, -50%);
-  color: #f0e6ca; font-size: 18px;
-}
-.snc-scrubber-labels {
-  display: flex; justify-content: space-between; margin-top: var(--space-2);
-  font-family: var(--font-ui); font-weight: 700; font-size: 15px; color: var(--color-text);
-}
-
-/* centered CTA directly under the media block, per the design */
-.snc-media-cta { display: flex; justify-content: center; margin-top: var(--gap-el); }
-
-/* — generic section rhythm — one gap unit between elements inside a
-     section (h2 -> intro -> content -> link), 180px between sections (the
-     section's own top padding IS that gap — no visible divider lines,
-     separation is whitespace only) — */
-.snc-section {
-  padding-top: var(--gap-section);
-  display: flex; flex-direction: column; gap: var(--gap-el);
-}
-.snc-section--center { text-align: center; align-items: center; }
-.snc-section h2 { font-size: clamp(30px, 4vw, 44px); margin: 0; }
-/* one body-copy size sitewide (hero paragraphs, section intros, the quote,
-   the CTA banner paragraph) — matches the homepage's own .bio p (20px) so
-   nothing reads as a different scale as you move down the page */
-.snc-section-intro {
-  color: var(--color-text); font-family: var(--font-ui); font-size: 20px; line-height: 1.3125;
-  max-width: 560px; margin: 0;
-}
-.snc-section--center .snc-section-intro { margin-left: auto; margin-right: auto; }
-.snc-quote {
-  max-width: 620px; margin: 0 auto; font-family: var(--font-ui); font-size: 20px;
-  color: var(--color-text); line-height: 1.3125;
-}
-/* the two "> " links (What&Why, What's Next) share this — same body size,
-   and a hover color change since they're actually clickable */
-.snc-link {
-  display: inline-block;
-  font-family: var(--font-ui); font-size: 20px; text-decoration: underline;
-  text-underline-offset: 3px;
-  color: var(--color-text);
-  transition: color 250ms ease;
-}
-.snc-link:hover { color: var(--color-accent-text); }
-/* the last section's bottom padding equals one section-gap, so the CTA
-   banner below sits the same 180px distance away as any two sections would */
-.snc-section:last-of-type { padding-bottom: var(--gap-section); }
-
-/* — placeholder blocks: the Figma file itself leaves these as flat light-grey
-     swatches (real content TBD), so we match that rather than inventing a
-     dark "placeholder" treatment — */
-.snc-placeholder {
-  display: flex; align-items: center; justify-content: center;
-  background: var(--color-placeholder);
-  border-radius: var(--radius-sm);
-  color: #7d7979;
-  font-family: var(--font-ui); font-size: 12px; text-align: center; padding: var(--space-3);
-}
-
-/* — how section: a click-to-select stepper. The 5 items and the image+
-     caption panel are stretched to the same overall height (align-items:
-     stretch + the list as a space-between flex column) so the two columns
-     read as one unified block, per the "should look like one big block"
-     note. The active item's top/bottom/left border forms a half-open box
-     that visually "points at" the panel it controls. — */
-.snc-how-grid {
-  display: grid; grid-template-columns: 1fr 1.6fr; gap: var(--space-8); align-items: stretch;
-}
-.snc-how-list {
-  list-style: none; margin: 0; padding: 0;
-  display: flex; flex-direction: column; justify-content: space-between;
-}
-.snc-how-list li {
-  font-family: var(--font-ui); font-size: 20px; color: var(--color-text-muted);
-  padding: 14px 18px; cursor: pointer;
-  border-top: 1px solid transparent; border-bottom: 1px solid transparent; border-left: 2px solid transparent;
-  transition: color 250ms ease, border-color 250ms ease, background 250ms ease;
-}
-.snc-how-list li:hover { color: var(--color-text); }
-.snc-how-list li.is-active {
-  color: var(--color-text);
-  border-top-color: var(--color-divider);
-  border-bottom-color: var(--color-divider);
-  border-left-color: var(--color-text);
-  background: rgba(255,255,255,0.04);
-}
-.snc-how-panel { display: flex; flex-direction: column; gap: var(--gap-el); height: 100%; }
-.snc-how-image { flex: 1; }
-/* smaller caption size (matches .snc-footer-desc) so this wraps to 2 lines,
-   not the 20px body-copy size which ran to 3 */
-.snc-how-caption { margin: 0; font-family: var(--font-ui); font-size: 13px; line-height: 1.5; color: var(--color-text-muted); }
-
-/* — insights — two cards, each a bordered frame (caption + two stacked
-     image placeholders, touching — no gap between them, per Figma) with a
-     second caption sitting below the frame's own border — */
-.snc-insights-grid {
-  width: 100%;
-  display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6);
-  /* 3x the standard element gap above the cards — the section's own flex
-     gap already provides 1x, this adds the other 2x on top */
-  margin-top: calc(var(--gap-el) * 2);
-}
-.snc-insight-card { display: flex; flex-direction: column; gap: var(--gap-el); }
-.snc-insight-card-frame {
-  border: 1px solid var(--color-divider);
-  border-radius: var(--radius-md);
-  background: rgba(255,255,255,0.02);
-  padding: var(--space-3);
-  display: flex; flex-direction: column; gap: var(--space-2);
-}
-.snc-insight-caption-top {
-  margin: 0; font-family: var(--font-ui); font-size: 13px; color: var(--color-text-muted);
-}
-.snc-insight-image { aspect-ratio: 431 / 150; }
-.snc-insight-caption-bottom {
-  margin: 0; font-family: var(--font-ui); font-style: italic; font-size: 12px;
-  color: var(--color-text-muted); text-align: center;
-}
-
-/* — CTA banner — just the default 180px shell like every other content
-     section; 1.5x the base padding to read noticeably taller. Its own
-     bottom margin is the 180px gap before the footer starts. — */
-/* back to the standard 1x section gap — doubling it read as an oversized
-   gap against the rest of the page's rhythm */
-.snc-cta-wrap { margin-bottom: var(--gap-section); }
-.snc-cta-banner-inner {
-  background: var(--color-glass-bg);
-  border: 1px solid var(--color-glass-border);
-  border-radius: var(--radius-lg);
-  padding: calc(var(--space-8) * 1.5) var(--space-8);
-  display: flex; align-items: center; justify-content: center; gap: 384px;
-  flex-wrap: wrap;
-}
-.snc-cta-banner-copy { flex: 0 1 auto; max-width: 480px; }
-.snc-cta-banner-copy h3 { font-family: var(--font-display); font-style: italic; font-size: clamp(30px, 3.4vw, 42px); margin: 0 0 8px; }
-.snc-cta-banner-copy p { margin: 0; color: var(--color-text); font-family: var(--font-ui); font-size: 16px; max-width: 460px; }
-
-/* — footer — compact band, 90px (narrow) shell. Column 1 (title, a shorter
-     3-line description, then the icon row) sits left; the two link lists
-     cluster together and sit pinned toward the right margin, matching the
-     wide gap Figma leaves between them — not evenly spread across the row. */
+/* — footer: simplified — name + inline nav (left), icons (center),
+     two-column tool list (right). No section headings, no description. — */
 .snc-footer {
-  background: rgba(23,23,23,0.35);
-  box-shadow: inset 0 8px 20px -8px rgba(255,255,255,0.25);
+  background: #232323;
+  border-top: 1px solid rgba(0,0,0,0.13);
+  box-shadow: 0 -8px 20px rgba(255,255,255,0.195);
   padding: var(--space-6) 0;
 }
 .snc-footer-grid {
-  display: flex; align-items: flex-start; justify-content: space-between;
+  display: flex; align-items: center; justify-content: space-between;
   flex-wrap: wrap; gap: var(--space-6);
 }
-.snc-footer-main { max-width: 320px; }
-.snc-footer-links { display: flex; gap: var(--space-8); }
-.snc-footer-title { font-family: var(--font-display); font-size: 20px; margin: 0 0 8px; }
-.snc-footer-desc { font-family: var(--font-ui); font-size: 13px; color: var(--color-text-muted); max-width: 290px; }
-/* "Key Links" reuses the exact same bold-heading treatment as "Other Tools
-   by Mayank" — it's a label, not a link, so no anchor/hover behavior */
-.snc-footer h4 { font-family: var(--font-ui); font-weight: 700; font-size: 15px; margin: 0 0 var(--space-2); color: var(--color-text); }
-.snc-footer-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-.snc-footer-list a { font-family: var(--font-ui); font-size: 14px; color: var(--color-text); transition: color 300ms ease; }
-.snc-footer-list a:hover { color: var(--color-text-muted); }
-.snc-footer-icons {
-  display: flex; align-items: center; gap: var(--space-3);
-  margin-top: var(--space-4);
-}
+/* nav sits BELOW the name (not inline beside it) — matches the right
+   column's line count so the two sides read the same height */
+.snc-footer-main { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); }
+.snc-footer-name { font-family: var(--font-display); font-size: 20px; margin: 0; white-space: nowrap; }
+.snc-footer-nav { display: flex; gap: var(--space-4); }
+.snc-footer-nav a { font-family: var(--font-ui); font-size: 14px; color: var(--color-text); transition: color 300ms ease; }
+.snc-footer-nav a:hover { color: var(--color-text-muted); }
+
+.snc-footer-icons { display: flex; align-items: center; gap: var(--space-3); }
 .snc-footer-icon {
   width: 26px; height: 26px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
@@ -548,25 +246,21 @@ button { font: inherit; }
 }
 .snc-footer-icon:hover { transform: translateY(-2px); }
 
+.snc-footer-tools { display: flex; gap: var(--space-8); }
+.snc-footer-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.snc-footer-list a { font-family: var(--font-ui); font-size: 14px; color: var(--color-text); transition: color 300ms ease; }
+.snc-footer-list a:hover { color: var(--color-text-muted); }
+
 @media (max-width: 1100px) {
-  :root { --margin-x: 80px; --margin-narrow: 50px; --gap-section: 100px; }
+  :root { --margin-x: 80px; --margin-narrow: 50px; }
 }
 @media (max-width: 720px) {
-  :root { --margin-x: 24px; --margin-narrow: 20px; --gap-section: 64px; }
-  .snc-header-nav { display: none; }
-  .snc-hero-row { flex-direction: column; }
-  .snc-hero-graphic { width: 140px; }
-  .snc-how-grid { grid-template-columns: 1fr; }
-  .snc-how-list { flex-direction: row; flex-wrap: wrap; gap: 8px; }
-  .snc-insights-grid { grid-template-columns: 1fr; }
-  .snc-footer-grid { flex-direction: column; }
-  .snc-footer-main { max-width: none; }
-  .snc-footer-desc { max-width: none; }
-  .snc-footer-links { gap: var(--space-6); }
-  .snc-toggle, .snc-timestamp { position: static; transform: none; }
-  .snc-controls { flex-direction: column; gap: var(--space-3); }
-  .snc-story { padding: var(--space-3) clamp(14px, 5vw, 30px); }
-  .snc-story-title { font-size: 15px; }
-  .snc-story-body { font-size: 12px; }
-  .snc-score-card { width: 100px; font-size: 8px; padding: 6px 8px; }
+  :root { --margin-x: 24px; --margin-narrow: 20px; }
+  .snc-hero-row { flex-direction: column; align-items: flex-start; }
+  .snc-hero-photos { width: 100%; max-width: 300px; margin: 0 auto; }
+  .snc-cta-row { padding-left: 24px; padding-right: 24px; }
+  .snc-btn { width: 100%; }
+  .snc-footer-grid { flex-direction: column; align-items: flex-start; }
+  .snc-footer-main { flex-direction: column; align-items: flex-start; gap: var(--space-2); }
+  .snc-footer-tools { gap: var(--space-6); }
 }

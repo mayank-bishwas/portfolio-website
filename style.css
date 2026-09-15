@@ -634,14 +634,52 @@ img.page-marker { width: auto; height: 110px; border-radius: 0; object-fit: cont
 .page-section[open] > .page-section-body { display: flex; flex-direction: column; gap: 32px; padding-top: 40px; }
 .page-item { display: flex; gap: 32px; align-items: flex-start; }
 .page-item--media-pair .page-item-media { flex: 1 1 0; }
-.page-item-media { flex: 0 0 222px; }
-.page-item--routewise .page-item-media { flex-basis: 222px; }
+.page-item-media { flex: 0 0 289px; }
+.page-item--routewise .page-item-media { flex-basis: 289px; }
 .page-item-media img { width: 100%; height: auto; border-radius: 4px; border: 1px solid #D7CCCC; display: block; }
 .page-item-media figcaption { margin-top: 6px; font-size: 13px; color: #8c8383; text-align: center; }
 .page-item-media iframe { width: 100%; aspect-ratio: 16/9; border-radius: 4px; border: 1px solid #D7CCCC; display: block; }
 .page-item-text { flex: 1; font-family: 'Inria Sans', sans-serif; font-size: 20px; line-height: 1.3125; color: #454545; }
 .page-item-text strong { font-family: 'Inria Sans', sans-serif; font-weight: 700; font-size: 20px; color: #454545; }
-.page-item-text a { color: #6fae9d; text-decoration: underline; text-underline-offset: 2px; }
+.page-item-text a, .page-intro a, .role-columns a, .page-item-media figcaption a {
+  color: #6fae9d;
+  text-decoration: none;
+}
+.page-item-text a strong, .page-item-title a strong {
+  color: #6fae9d;
+}
+.page-item-text a:hover,
+.page-item-text a:hover strong,
+.page-intro a:hover,
+.role-columns a:hover,
+.page-item-media figcaption a:hover,
+.page-item-media a:hover ~ figcaption a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.page-item-media a img { transition: opacity 0.15s ease; }
+.page-item-media a:hover img { opacity: 0.92; }
+
+/* Vertical gap between header and description */
+.page-item-title,
+.page-item-text > a:first-child:has(strong),
+.page-item-text > strong:first-child {
+  display: block;
+  margin-bottom: 10px;
+}
+.page-item-text > a:first-child:has(strong) + br,
+.page-item-text > strong:first-child + br {
+  display: none;
+}
+
+/* Fixed aspect-ratio and crop for strategy media pairs */
+.page-item--strategy .page-item-media img,
+.page-item--writing-grid .page-item-media img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  object-position: top center;
+}
 
 /* — plain logo/image grid (e.g. Certificates page's "Tools" section: images only, no text) — */
 .tools-grid { display: flex; flex-wrap: wrap; align-items: center; gap: 28px 40px; }
@@ -668,11 +706,29 @@ img.page-marker { width: auto; height: 110px; border-radius: 0; object-fit: cont
 /* — About page: two-column "roles I've held" list, and taste-gallery grids (Books, Cinema,
    People, Media, Other Interests, Latest) — a row of thumbnails with one shared caption. — */
 .role-columns { display: flex; gap: 40px; margin: 14px 0; }
-.role-columns ul { flex: 1; margin: 0; padding-left: 20px; font-family: 'Inria Sans', sans-serif; font-size: 18px; line-height: 1.6; color: #454545; }
+.role-columns ul { flex: 1; margin: 0; padding-left: 20px; font-family: 'Inria Sans', sans-serif; font-size: 20px; line-height: 1.6; color: #454545; }
 .bio-grid { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 16px; }
 .bio-grid img { height: 170px; width: auto; max-width: 260px; border-radius: 4px; border: 1px solid #D7CCCC; object-fit: cover; display: block; }
 .bio-grid iframe { width: 260px; aspect-ratio: 16/9; height: auto; border-radius: 4px; border: 1px solid #D7CCCC; display: block; }
 .bio-caption { flex-basis: 100%; font-family: 'Inria Sans', sans-serif; font-size: 16px; font-style: italic; line-height: 1.5; color: #6b6666; margin: 4px 0 0; }
+
+/* — People section: a small on-brand name tooltip on hover. A plain img can't host
+   ::after content (replaced elements don't render generated content), so each avatar
+   is wrapped in a span that positions the tooltip and reveals it on hover. */
+.bio-avatar { position: relative; display: inline-block; line-height: 0; }
+.bio-avatar img { margin: 0; }
+.bio-tooltip {
+  position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%) translateY(4px);
+  background: #454545; color: #fbfbfb; font-family: 'Instrument Serif', serif; font-size: 13px; line-height: 1;
+  white-space: nowrap; padding: 5px 10px; border-radius: 4px;
+  opacity: 0; pointer-events: none; z-index: 5;
+  transition: opacity 200ms cubic-bezier(0.22,0.61,0.36,1), transform 200ms cubic-bezier(0.22,0.61,0.36,1);
+}
+.bio-tooltip::after {
+  content: ""; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+  border: 5px solid transparent; border-top-color: #454545;
+}
+.bio-avatar:hover .bio-tooltip { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 @media (max-width: 860px) {
   .vibe-grid { grid-template-columns: 1fr; }

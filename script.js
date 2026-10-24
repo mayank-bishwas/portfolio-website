@@ -167,4 +167,292 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
+
+  // ==========================================================
+  // Mobile Showcase Interactivity (Active on mobile devices)
+  // ==========================================================
+  // Mobile Showcase Interactivity (Tinder-style swipe & auto-cycle)
+  // ==========================================================
+  const stackDeck = document.getElementById('mobile-card-stack');
+  if (stackDeck) {
+    const stackCards = Array.from(stackDeck.querySelectorAll('.m-stack-card'));
+    const catButtons = Array.from(document.querySelectorAll('.mobile-cat-btn'));
+    const TOTAL_CARDS = stackCards.length;
+
+    let currentMobileIndex = 0;
+    let autoCycleTimer = null;
+    const AUTO_INTERVAL = 4500;
+    let isInteracting = false;
+    let hasSwiped = false;
+
+    function getFrontCard() {
+      return stackCards[currentMobileIndex];
+    }
+
+    function updateStackPositions(activeIndex, animateShuffle = true, direction = 'next') {
+      if (activeIndex < 0 || activeIndex >= TOTAL_CARDS) return;
+      const oldIndex = currentMobileIndex;
+      currentMobileIndex = activeIndex;
+
+      const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Update vertical navigation category items
+      catButtons.forEach((btn, idx) => {
+        btn.classList.toggle('active', idx === activeIndex);
+      });
+
+      if (!animateShuffle || prefersReducedMotion || oldIndex === activeIndex) {
+        stackCards.forEach((card, idx) => {
+          card.classList.remove('is-shuffling-out', 'is-shuffling-prev');
+          card.style.transition = '';
+          card.style.transform = '';
+          card.style.opacity = '';
+          const rel = (idx - activeIndex + TOTAL_CARDS) % TOTAL_CARDS;
+          card.setAttribute('data-rel', rel);
+        });
+        return;
+      }
+
+      // Physical Card Shuffle: peel top card away in direction of motion
+      const outgoingCard = stackCards[oldIndex];
+      if (outgoingCard) {
+        outgoingCard.classList.remove('is-shuffling-out', 'is-shuffling-prev');
+        outgoingCard.classList.add(direction === 'prev' ? 'is-shuffling-prev' : 'is-shuffling-out');
+      }
+
+      // Under-cards glide forward into their new order
+      stackCards.forEach((card, idx) => {
+        if (idx !== oldIndex) {
+          card.classList.remove('is-shuffling-out', 'is-shuffling-prev');
+          card.style.transition = '';
+          card.style.transform = '';
+          card.style.opacity = '';
+          const rel = (idx - activeIndex + TOTAL_CARDS) % TOTAL_CARDS;
+          card.setAttribute('data-rel', rel);
+        }
+      });
+
+      // Once peeled, outgoing card tucks behind the deck into its new relative position
+      setTimeout(() => {
+        if (outgoingCard) {
+          outgoingCard.classList.remove('is-shuffling-out', 'is-shuffling-prev');
+          outgoingCard.style.transition = '';
+          outgoingCard.style.transform = '';
+          outgoingCard.style.opacity = '';
+          const rel = (oldIndex - activeIndex + TOTAL_CARDS) % TOTAL_CARDS;
+          outgoingCard.setAttribute('data-rel', rel);
+        }
+      }, 190);
+    }
+
+    // Method A: Category link selection (clicking/tapping opens the page)
+    catButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        const href = btn.getAttribute('href');
+        if (href) {
+          window.location.href = href;
+        } else {
+          const idx = parseInt(btn.getAttribute('data-index'), 10);
+          const dir = idx < currentMobileIndex ? 'prev' : 'next';
+          updateStackPositions(idx, true, dir);
+          resetAutoTimer();
+        }
+      });
+    });
+
+    // Auto-cycle functions
+    function startAutoTimer() {
+      if (!autoCycleTimer && !isInteracting) {
+        autoCycleTimer = setInterval(() => {
+          if (window.innerWidth <= 768 && !isInteracting) {
+            const nextIdx = (currentMobileIndex + 1) % TOTAL_CARDS;
+            updateStackPositions(nextIdx, true, 'next');
+          }
+        }, AUTO_INTERVAL);
+      }
+    }
+
+    function pauseAutoTimer() {
+      if (autoCycleTimer) {
+        clearInterval(autoCycleTimer);
+        autoCycleTimer = null;
+      }
+    }
+
+    function resetAutoTimer() {
+      pauseAutoTimer();
+      startAutoTimer();
+    }
+
+    // Method B: Tinder-style tactile swipe and hold-to-pause
+    let startX = 0;
+    let startY = 0;
+    let deltaX = 0;
+    let deltaY = 0;
+    let isDragging = false;
+    let activeCard = null;
+
+    function handleStart(clientX, clientY) {
+      if (window.innerWidth > 768) return;
+      isInteracting = true;
+      pauseAutoTimer(); // Pause auto-change immediately on touch / hold
+
+      startX = clientX;
+      startY = clientY;
+      deltaX = 0;
+      deltaY = 0;
+      isDragging = false;
+      hasSwiped = false;
+
+      activeCard = getFrontCard();
+      if (activeCard) {
+        activeCard.style.transition = 'none';
+      }
+    }
+
+    function handleMove(clientX, clientY, e) {
+      if (!isInteracting || !activeCard) return;
+
+      deltaX = clientX - startX;
+      deltaY = clientY - startY;
+
+      if (!isDragging) {
+        // Detect horizontal swipe intent (only when movement is distinctly horizontal > 12px)
+        if (Math.abs(deltaX) > 12 && Math.abs(deltaX) > Math.abs(deltaY) * 0.8) {
+          isDragging = true;
+        } else if (Math.abs(deltaY) > 16) {
+          // Vertical page scroll detected — cancel card drag
+          isInteracting = false;
+          if (activeCard) {
+            activeCard.style.transition = '';
+            activeCard.style.transform = '';
+          }
+          resetAutoTimer();
+          return;
+        }
+      }
+
+      if (isDragging) {
+        if (e && e.cancelable) e.preventDefault(); // Prevent page wobble while swiping card
+        const rot = Math.max(-18, Math.min(18, deltaX * 0.08));
+        activeCard.style.transform = 'translate3d(' + deltaX.toFixed(1) + 'px, ' + (deltaY * 0.2).toFixed(1) + 'px, 30px) rotate(' + rot.toFixed(2) + 'deg)';
+      }
+    }
+
+    function handleEnd() {
+      if (!isInteracting) return;
+      isInteracting = false;
+
+      if (!activeCard) {
+        resetAutoTimer();
+        return;
+      }
+
+      const SWIPE_THRESHOLD = 36;
+
+      if (isDragging && Math.abs(deltaX) > SWIPE_THRESHOLD) {
+        hasSwiped = true;
+        const swipingLeft = deltaX < 0;
+        const targetX = swipingLeft ? -window.innerWidth * 0.85 : window.innerWidth * 0.85;
+        const targetRot = swipingLeft ? -18 : 18;
+
+        // Tinder fly-off animation
+        activeCard.style.transition = 'transform 200ms cubic-bezier(0.2, 0.8, 0.25, 1), opacity 200ms ease';
+        activeCard.style.transform = 'translate3d(' + targetX.toFixed(0) + 'px, ' + (deltaY * 0.2 + 10).toFixed(0) + 'px, 30px) rotate(' + targetRot + 'deg)';
+        activeCard.style.opacity = '0';
+
+        const nextIndex = swipingLeft
+          ? (currentMobileIndex + 1) % TOTAL_CARDS
+          : (currentMobileIndex - 1 + TOTAL_CARDS) % TOTAL_CARDS;
+        const direction = swipingLeft ? 'next' : 'prev';
+
+        const cardToReset = activeCard;
+        setTimeout(() => {
+          if (cardToReset) {
+            cardToReset.style.transition = '';
+            cardToReset.style.transform = '';
+            cardToReset.style.opacity = '';
+          }
+          updateStackPositions(nextIndex, false, direction);
+          activeCard = null;
+          isDragging = false;
+          resetAutoTimer();
+        }, 190);
+      } else {
+        // Incomplete swipe or stationary hold release — snap smoothly back to deck
+        hasSwiped = false;
+        activeCard.style.transition = 'transform 240ms cubic-bezier(0.18, 0.89, 0.32, 1.25)';
+        activeCard.style.transform = 'translate3d(0, 0, 0) rotate(0deg)';
+
+        const cardToReset = activeCard;
+        setTimeout(() => {
+          if (cardToReset) {
+            cardToReset.style.transition = '';
+            cardToReset.style.transform = '';
+          }
+          activeCard = null;
+          isDragging = false;
+          resetAutoTimer();
+        }, 240);
+      }
+    }
+
+    // Touch Event Listeners (Mobile devices)
+    stackDeck.addEventListener('touchstart', (e) => {
+      if (e.touches && e.touches.length === 1) {
+        handleStart(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: false });
+
+    window.addEventListener('touchmove', (e) => {
+      if (isInteracting && e.touches && e.touches.length === 1) {
+        handleMove(e.touches[0].clientX, e.touches[0].clientY, e);
+      }
+    }, { passive: false });
+
+    window.addEventListener('touchend', () => {
+      handleEnd();
+    }, { passive: true });
+
+    window.addEventListener('touchcancel', () => {
+      handleEnd();
+    }, { passive: true });
+
+    // Mouse Event Listeners (Desktop responsive mode & dev testing)
+    stackDeck.addEventListener('mousedown', (e) => {
+      if (e.button === 0) {
+        handleStart(e.clientX, e.clientY);
+      }
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (isInteracting) {
+        handleMove(e.clientX, e.clientY, e);
+      }
+    });
+
+    window.addEventListener('mouseup', () => {
+      if (isInteracting) {
+        handleEnd();
+      }
+    });
+
+    // Handle tapping/clicking cards to open that page
+    stackDeck.addEventListener('click', (e) => {
+      if (hasSwiped) {
+        e.preventDefault();
+        e.stopPropagation();
+        setTimeout(() => { hasSwiped = false; }, 80);
+      } else {
+        const link = e.target.closest('a') || (getFrontCard() && getFrontCard().querySelector('a'));
+        if (link && link.href) {
+          window.location.href = link.href;
+        }
+      }
+    }, true);
+
+    // Initial state: Start at first card (SEO)
+    updateStackPositions(0, false);
+    startAutoTimer();
+  }
 });

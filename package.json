@@ -1,0 +1,10 @@
+{
+  "name": "portfolio-snc-dev",
+  "version": "1.0.0",
+  "description": "Local view with auto-refresh for snc-dev.html",
+  "main": "dev-server.js",
+  "scripts": {
+    "dev": "node dev-server.js",
+    "start": "node dev-server.js"
+  }
+}

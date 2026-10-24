@@ -1,0 +1,927 @@
+/* SNC — "My Life Runs on Sticky Notes" — standalone stylesheet.
+   Not linked to style.css. Colors/type here are taken from the Figma file
+   "Portfolio — SNC" (node 27:535), reconciled by hand with the portfolio's
+   own type scale — not a live link, so re-check both sides once merged. */
+
+:root {
+  /* — palette, read from the Figma frame — */
+  --color-bg: #2e2e2e;
+  --color-text: #ffffff;
+  --color-text-muted: #b3b3b3;
+  --color-text-soft: #eee9e9;
+  --color-divider: rgba(255,255,255,0.14);
+
+  /* the story-mode panel intentionally reuses the *light* portfolio palette
+     (style.css's --color-bg/#454545 text) — the visual cue that reading a
+     story briefly steps into the "paper" world the rest of the site lives in */
+  --color-story-bg: #f3f2f2;
+  --color-story-text: #454545;
+  --color-story-border: rgba(211,208,208,0.83);
+
+  --color-glass-bg: rgba(197,189,189,0.35);
+  --color-glass-border: rgba(0,0,0,0.13);
+  --color-placeholder: #d9d9d9;
+
+  --gradient-cta: linear-gradient(100deg, #f0e6ca 4%, #998d4f 104%);
+  --color-accent-text: #e1cf9a;
+
+  --font-display: "Instrument Serif", serif;
+  --font-ui: "Inria Sans", sans-serif;
+  --font-body: "Lora", system-ui, sans-serif;
+
+  --space-1: 4.6px;
+  --space-2: 9.2px;
+  --space-3: 13.8px;
+  --space-4: 18.4px;
+  --space-6: 27.6px;
+  --space-8: 36.8px;
+  --space-10: 46px;
+  --space-14: 64.4px;
+
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 12px;
+
+  --shadow-card: -2px 2px 2px 0px rgba(0,0,0,0.2);
+
+  /* uniform spacing rule: gaps between elements inside a section all use
+     --gap-el; the gap between two sections is 180px, sitewide */
+  --gap-el: 20px;
+  --gap-section: 180px;
+  /* 180px is the DEFAULT page margin (hero, What&Why, How, Insights, CTA
+     banner). 90px is the exception, used only by the header, the media/
+     scrubber block, and the footer — see .snc-shell--narrow. */
+  --margin-x: 180px;
+  --margin-narrow: 90px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body { margin: 0; padding: 0; }
+body {
+  /* echoes the homepage's soft radial backdrop glow, desaturated/darkened
+     for SNC rather than a flat fill */
+  background: radial-gradient(ellipse 1400px 900px at 50% -6%, #3c3c3c 0%, #313131 45%, #2a2a2a 100%) fixed;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  /* matches style.css's own body line-height (1.55) rather than an
+     invented looser value */
+  line-height: 1.55;
+}
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.1;
+  margin: 0 0 var(--space-3);
+  color: var(--color-text);
+}
+p { margin: 0 0 var(--space-3); }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button { font: inherit; }
+
+::selection { background: color-mix(in srgb, #998d4f 30%, transparent); }
+*:focus-visible { outline: 2px solid #998d4f; outline-offset: 3px; }
+
+/* — paper grain, same technique and asset as the homepage's #grain (see
+   index.html/style.css) — two drifting layers, blended so the texture reads
+   against a dark ground instead of the homepage's light one — */
+@keyframes sncGrainDriftA {
+  0%   { transform: translate3d(0, 0, 0) scale(1.05); opacity: 0.5; }
+  33%  { transform: translate3d(-16px, 9px, 0) scale(1.08); opacity: 0.32; }
+  66%  { transform: translate3d(11px, -7px, 0) scale(1.06); opacity: 0.46; }
+  100% { transform: translate3d(0, 0, 0) scale(1.05); opacity: 0.5; }
+}
+@keyframes sncGrainDriftB {
+  0%   { transform: translate3d(0, 0, 0) scale(1.09); opacity: 0.3; }
+  40%  { transform: translate3d(14px, -11px, 0) scale(1.05); opacity: 0.5; }
+  75%  { transform: translate3d(-9px, 8px, 0) scale(1.07); opacity: 0.36; }
+  100% { transform: translate3d(0, 0, 0) scale(1.09); opacity: 0.3; }
+}
+#snc-grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 5;
+  mix-blend-mode: overlay;
+}
+.snc-grain-layer {
+  position: absolute; inset: -90px;
+  background-image: url("images/grain-texture.png");
+  background-repeat: repeat;
+}
+.snc-grain-layer--a { background-size: 256px 256px; animation: sncGrainDriftA 34s ease-in-out infinite; }
+.snc-grain-layer--b { background-size: 172px 172px; animation: sncGrainDriftB 47s ease-in-out infinite; }
+
+/* — layout shell — */
+.snc-page { overflow-x: hidden; }
+.snc-shell {
+  width: 100%; max-width: 1600px; margin: 0 auto;
+  padding: 0 var(--margin-x);
+}
+/* the three confirmed exceptions to the 180px default: header, the media/
+   scrubber block, and the footer all sit at 90px instead */
+.snc-shell--narrow { padding: 0 var(--margin-narrow); }
+
+/* — buttons: the recurring cream-to-olive "Get your Year Wrap!" pill — */
+.snc-btn {
+  display: inline-flex; align-items: baseline; gap: 4px;
+  font-family: var(--font-display); font-size: 17px;
+  color: #1a1a1a;
+  background: var(--gradient-cta);
+  border: none; border-radius: 999px;
+  padding: 11px 26px;
+  cursor: pointer; white-space: nowrap;
+  transition: transform 300ms cubic-bezier(0.22,0.61,0.36,1), box-shadow 300ms ease;
+}
+.snc-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,0.35); }
+.snc-btn em { font-style: italic; }
+.snc-btn--sm { font-size: 13px; padding: 7px 18px; }
+.snc-btn--lg { font-size: 21px; padding: 15px 32px; }
+
+/* — header — */
+/* a floating pill: 10px inset on every side (top via the sticky offset,
+   left/right via margin, and the rounded ends read as the "bottom" of that
+   same 10px logic), curved left/right ends. Fully transparent at rest so it
+   blends invisibly into the hero; a small scroll listener (see snc.html)
+   adds .is-scrolled past 10px of scroll, which is what actually paints the
+   translucent+blurred pill — that fade-in is what reads as "now it's
+   sticking", the floating shape is there from the start either way. */
+.snc-header {
+  position: sticky; top: 10px; z-index: 40;
+  margin: 0 10px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: rgba(42,42,42,0);
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
+  transition: background 300ms ease, backdrop-filter 300ms ease;
+}
+.snc-header.is-scrolled {
+  background: rgba(42,42,42,0.7);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+.snc-header-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  /* ~20% shorter than the standard --gap-el padding, so the whole band is
+     a noticeably slimmer bar than the rest of the page's spacing rhythm */
+  padding-top: 13px; padding-bottom: 13px;
+}
+.snc-header-right { display: flex; align-items: center; gap: var(--space-6); }
+.snc-header-nav { display: flex; align-items: center; gap: var(--space-4); }
+.snc-header-nav a {
+  font-family: var(--font-ui); font-size: 13px; color: var(--color-text-muted);
+  transition: color 250ms ease;
+}
+.snc-header-nav a:hover { color: var(--color-accent-text); }
+/* same home-mark asset as the rest of the site (index.html's
+   .site-header-home), but its actual dark green/gold colors disappear
+   against this page's dark bg — brightness(0) invert(1) turns any opaque
+   pixel white (a CSS-only recolor, no second image asset needed) */
+.snc-home-link { display: block; }
+.snc-home-link img {
+  display: block; height: 44px; width: auto;
+  filter: brightness(0) invert(1) drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+  transition: transform 500ms cubic-bezier(0.22,0.61,0.36,1);
+}
+.snc-home-link:hover img { transform: scale(1.08); }
+.snc-home-link:active img { transform: scale(0.94); }
+
+/* — hero — */
+/* 60px less than the standard section gap — pulls the hero row up closer to
+   the header without touching the media block's own (independent) gap below */
+.snc-hero { padding-top: calc(var(--gap-section) - 60px); }
+/* the media/scrubber block breaks out to the narrower 90px shell, so it
+   needs its own top gap independent of the hero-row's 180px shell above it */
+.snc-hero-media-shell { margin-top: var(--gap-section); }
+.snc-hero-row {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: var(--space-8);
+}
+.snc-hero-copy { flex: 1; max-width: 620px; display: flex; flex-direction: column; gap: var(--gap-el); }
+.snc-hero-copy p { margin: 0; }
+/* 50% larger than the homepage's .byline-name (38px) — a deliberate,
+   bigger display moment for SNC's own hero, not a like-for-like match */
+.snc-hero h1 { font-size: 57px; margin: 0; }
+/* body copy line-height matches style.css's .bio p (1.3125) — tighter than
+   the page's own base line-height, since this is a dense multi-line block */
+/* widened from 560 so the two paragraphs wrap to 5 lines total instead of 7 */
+.snc-hero p { font-family: var(--font-ui); font-size: 20px; line-height: 1.3125; color: var(--color-text); max-width: 620px; }
+/* 2x the standard element gap (--gap-el already spaces it once via the
+   flex column's own gap; this adds a second one on top) */
+.snc-hero-cta { margin-top: var(--gap-el); }
+
+.snc-hero-graphic {
+  flex: none; width: 220px; aspect-ratio: 1 / 1;
+}
+
+/* — shared media block: the toggle swaps this box between "scene" and "story",
+     and one scrubber underneath drives both — that's the whole point, so the
+     box itself must be a single shared element, not two stacked sections. — */
+.snc-media-wrap { margin-top: 0; }
+.snc-media {
+  position: relative;
+  width: 100%; aspect-ratio: 1403 / 590;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #F2F2F2;
+}
+.snc-media-face {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: opacity 260ms ease;
+}
+.snc-media[data-mode="scene"] .snc-media-face--story,
+.snc-media[data-mode="story"] .snc-media-face--scene {
+  opacity: 0; pointer-events: none;
+}
+
+/* scene face */
+.snc-scene {
+  background: #F2F2F2;
+  overflow: hidden;
+  color: rgba(0,0,0,0.7);
+  font-family: var(--font-ui); font-size: 13px; text-align: center;
+}
+.snc-scene-art {
+  width: 100%; height: 100%;
+  display: block;
+}
+/* one switch stops the whole scene */
+.snc-scene.is-paused .snc-scene-art * { animation-play-state: paused; }
+/* ── Story Panel Stage (Panel 1 & Panel 2) ────────────────────────── */
+.snc-panel-stage {
+  position: absolute; inset: 0; z-index: 5;
+  background: #F2F2F2;
+  overflow: hidden;
+  pointer-events: none;
+  animation: pStageBgFade 24s ease-in-out forwards;
+}
+
+@keyframes pStageBgFade {
+  0%, 52.0% {
+    background-color: #F2F2F2;
+  }
+  56.67%, 100% {
+    background-color: rgba(242, 242, 242, 0);
+  }
+}
+
+/* Pause support */
+.snc-scene.is-paused .snc-panel-stage * {
+  animation-play-state: paused !important;
+}
+
+/* ── Sticky Note Anchor & Morph to Bulb ────────────────────────────── */
+.snc-p-note-anchor {
+  position: absolute;
+  top: 24%; left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 30;
+}
+
+.snc-p-note {
+  height: 48%;
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(172deg, #FFF59D 0%, #FFEE58 35%, #FDD835 100%);
+  border-radius: 3px;
+  box-shadow:
+    0 4px 18px rgba(0,0,0,0.14),
+    0 0 0 1px rgba(0,0,0,0.05),
+    inset 0 1px 0 rgba(255,255,255,0.50),
+    inset 0 -3px 8px rgba(200,170,0,0.10);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 5%;
+  transform-origin: center center;
+  animation: pNoteSequence 24s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes pNoteSequence {
+  /* Panel 1: Paste in */
+  0%          { transform: scale(0) rotate(-10deg); opacity: 0; }
+  1.88%       { transform: scale(1.08) rotate(1.5deg); opacity: 1; }
+  3.13%       { transform: scale(1) rotate(-0.8deg); opacity: 1; }
+  11.67%      { transform: scale(1) rotate(-0.8deg); opacity: 1; }
+  /* Zoom out to 20% size and stay above Embi's stopping point (3.8s / 15.83%) */
+  15.83%      { transform: translateY(0) scale(0.20) rotate(-0.5deg); opacity: 1; }
+  35.42%      { transform: translateY(0) scale(0.20) rotate(-0.5deg); opacity: 1; }
+  /* At 8.6s (35.83%): As Embi looks up, Note pops & transforms immediately into bulb */
+  35.83%      { transform: translateY(0) scale(0.26) rotate(2.5deg); opacity: 0.95; }
+  36.25%, 100% { transform: translateY(0) scale(0); opacity: 0; visibility: hidden; pointer-events: none; }
+}
+
+/* Scribble text lines */
+.snc-panel-1-line {
+  text-align: center; line-height: 1.15;
+  opacity: 0; transform: translateY(5px);
+}
+.snc-panel-1-line--1 {
+  font-family: 'Inria Sans', sans-serif;
+  font-size: clamp(11px, 1.8vw, 18px);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: #5c4e30;
+  animation: p1Scribble 0.45s 0.65s ease-out forwards;
+}
+.snc-panel-1-line--2 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(18px, 3.8vw, 40px);
+  font-weight: 400;
+  color: #2c2010;
+  animation: p1Scribble 0.45s 1.1s ease-out forwards;
+}
+.snc-panel-1-line--3 {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(18px, 3.8vw, 40px);
+  font-weight: 400;
+  color: #2c2010;
+  animation: p1Scribble 0.45s 1.5s ease-out forwards;
+}
+@keyframes p1Scribble {
+  0%   { opacity: 0; transform: translateY(5px) scaleX(0.92); }
+  70%  { opacity: 1; }
+  100% { opacity: 1; transform: translateY(0) scaleX(1); }
+}
+
+/* ── Idea Light Bulb (Morph from Sticky Note) ───────────────────────── */
+.snc-p-bulb {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform-origin: center center;
+  opacity: 0;
+  z-index: 30;
+  transform: translate(-50%, -50%) scale(0);
+  animation: pBulbPop 24s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.snc-p-bulb-svg {
+  width: clamp(80px, 10vw, 120px);
+  height: clamp(80px, 10vw, 120px);
+  overflow: visible;
+  display: block;
+}
+
+@keyframes pBulbPop {
+  0%, 35.6%   { opacity: 0; transform: translate(-50%, -50%) scale(0); visibility: hidden; }
+  /* Pops in as Embi looks up at 8.6s */
+  35.83%      { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(0.35); }
+  36.67%      { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(1.08); }
+  37.50%      { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(0.88); }
+  /* Stays illuminated for exactly 3.0 seconds: 8.6s to 11.6s (48.33%) */
+  47.92%      { opacity: 1; visibility: visible; transform: translate(-50%, -50%) scale(0.88); }
+  48.33%      { opacity: 0.95; transform: translate(-50%, -50%) scale(0.92); }
+  /* Graceful fade-out & scale down at 11.6s - 12.0s */
+  49.58%      { opacity: 0; transform: translate(-50%, -50%) translateY(-14px) scale(0.35); pointer-events: none; visibility: hidden; }
+  50.00%, 100% { opacity: 0; transform: translate(-50%, -50%) translateY(-14px) scale(0); pointer-events: none; visibility: hidden; }
+}
+
+.snc-p-bulb-rays line {
+  transform-origin: 80px 74px;
+  animation: pBulbRays 1.0s 8.6s ease-in-out infinite alternate;
+}
+@keyframes pBulbRays {
+  0%   { stroke-width: 5px; opacity: 0.8; transform: scale(0.92); }
+  100% { stroke-width: 6.5px; opacity: 1; transform: scale(1.08); }
+}
+
+.snc-p2-actor-wrap {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  width: 22%;
+  height: 52%;
+  pointer-events: none;
+  z-index: 10;
+  transform: translate3d(-240%, 0, 0);
+  animation: p2EmbiWalkIn 24s linear forwards;
+}
+
+.snc-p2-char-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  display: block;
+}
+
+@keyframes p2EmbiWalkIn {
+  0%, 15.82% {
+    transform: translate3d(-240%, 0, 0);
+    opacity: 0;
+  }
+  /* Phase Zero continuous constant-velocity walk (3.8s to 7.8s -> 15.83% to 32.50%) */
+  15.83% {
+    transform: translate3d(-240%, 0, 0);
+    opacity: 1;
+  }
+  17.91% {
+    transform: translate3d(-216.25%, 0, 0);
+    opacity: 1;
+  }
+  20.00% {
+    transform: translate3d(-192.5%, 0, 0);
+    opacity: 1;
+  }
+  22.08% {
+    transform: translate3d(-168.75%, 0, 0);
+    opacity: 1;
+  }
+  24.17% {
+    transform: translate3d(-145%, 0, 0);
+    opacity: 1;
+  }
+  26.25% {
+    transform: translate3d(-121.25%, 0, 0);
+    opacity: 1;
+  }
+  28.33% {
+    transform: translate3d(-97.5%, 0, 0);
+    opacity: 1;
+  }
+  30.42% {
+    transform: translate3d(-73.75%, 0, 0);
+    opacity: 1;
+  }
+  32.50%, 100% {
+    transform: translate3d(-50%, 0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes sncScenePan {
+  0%   { background-position: 22% center; }
+  100% { background-position: 78% center; }
+}
+
+/* character prototype parked while the scene background above is being
+   evaluated as a placeholder — re-enable once the new reference-based rig
+   (see dev/character_test/) replaces it */
+.snc-char { display: none; }
+
+/* — character prototype v2 — one persistent squircle body + one persistent
+     limb/face rig, reused verbatim across all 4 moods (per reference: "the
+     central blob is almost the same every time"). Mood/pose changes purely
+     via transform (rotation/translation) and stop-color interpolation on a
+     single shared timeline — nothing is duplicated, faded, or swapped, so
+     the loop reads as one character actually moving between states. Body
+     stays crisp-edged (no edge blur) — grain + a small unblurred sheen
+     carry the glass feel instead of a heavy glow. — */
+.snc-char { width: 200px; height: auto; max-width: 55%; overflow: visible; }
+.snc-char-shadow { fill: rgba(0,0,0,0.35); }
+.snc-char-body { filter: drop-shadow(0 3px 6px rgba(0,0,0,0.22)); }
+.snc-char-grain { opacity: 0.16; mix-blend-mode: multiply; }
+.snc-char-sheen { fill: #ffffff; opacity: 0.16; mix-blend-mode: screen; }
+
+.snc-char-limb {
+  fill: none; stroke: #2b2b2b; stroke-width: 3;
+  stroke-linecap: round; stroke-linejoin: round;
+  transition: none;
+}
+.snc-char-eyes circle { fill: #2b2b2b; }
+.snc-char-mouth path {
+  fill: none; stroke: #2b2b2b; stroke-width: 2.5; stroke-linecap: round;
+}
+.snc-char-flower-center { fill: #f2c14e; }
+.snc-char-flower-petal { fill: #f2789f; }
+
+/* whole-body lean, shared timeline for every animated part below */
+.snc-char-rig {
+  transform-origin: 110px 182px;
+  animation: charRig 16s ease-in-out infinite;
+}
+.snc-char-limb--arm-l { transform-origin: 64px 108px; animation: charArmL 16s ease-in-out infinite; }
+.snc-char-limb--arm-r { transform-origin: 156px 108px; animation: charArmR 16s ease-in-out infinite; }
+.snc-char-limb--leg-l { transform-origin: 92px 180px; animation: charLegL 16s ease-in-out infinite; }
+.snc-char-limb--leg-r { transform-origin: 128px 180px; animation: charLegR 16s ease-in-out infinite; }
+.snc-char-eyes { transform-origin: 110px 118px; animation: charEyes 16s ease-in-out infinite; }
+.snc-char-mouth { transform-origin: 110px 144px; animation: charMouth 16s ease-in-out infinite; }
+.snc-char-prop { transform-origin: 90px 179px; animation: charProp 16s ease-in-out infinite; }
+.snc-char-grad-stop1 { animation: charStop1 16s ease-in-out infinite; }
+.snc-char-grad-stop2 { animation: charStop2 16s ease-in-out infinite; }
+
+/* timeline: 0–20% happy hold, 25–45% sad hold, 50–70% energetic hold,
+   75–95% flower hold — the gaps between are the actual transitions */
+@keyframes charRig {
+  0%, 20%   { transform: translate(0px, 0px) rotate(0deg); }
+  25%, 45%  { transform: translate(-3px, 5px) rotate(-4deg); }
+  50%, 70%  { transform: translate(2px, -4px) rotate(3deg); }
+  75%, 95%  { transform: translate(-1px, 2px) rotate(-1deg); }
+  100%      { transform: translate(0px, 0px) rotate(0deg); }
+}
+@keyframes charArmL {
+  0%, 20%   { transform: rotate(6deg); }
+  25%, 45%  { transform: rotate(-55deg); }
+  50%, 70%  { transform: rotate(120deg); }
+  75%, 95%  { transform: rotate(-40deg); }
+  100%      { transform: rotate(6deg); }
+}
+@keyframes charArmR {
+  0%, 20%   { transform: rotate(-130deg); }
+  25%, 45%  { transform: rotate(8deg); }
+  50%, 70%  { transform: rotate(-120deg); }
+  75%, 95%  { transform: rotate(10deg); }
+  100%      { transform: rotate(-130deg); }
+}
+@keyframes charLegL {
+  0%, 20%   { transform: rotate(4deg); }
+  25%, 45%  { transform: rotate(8deg); }
+  50%, 70%  { transform: rotate(-6deg); }
+  75%, 95%  { transform: rotate(3deg); }
+  100%      { transform: rotate(4deg); }
+}
+@keyframes charLegR {
+  0%, 20%   { transform: rotate(-4deg); }
+  25%, 45%  { transform: rotate(-2deg); }
+  50%, 70%  { transform: rotate(8deg); }
+  75%, 95%  { transform: rotate(-3deg); }
+  100%      { transform: rotate(-4deg); }
+}
+@keyframes charEyes {
+  0%, 20%   { transform: translate(0px, 0px) scaleY(0.55); }
+  25%, 45%  { transform: translate(-3px, 4px) scaleY(1); }
+  50%, 70%  { transform: translate(1px, -3px) scaleY(0.5) scale(1.08); }
+  75%, 95%  { transform: translate(-1px, 2px) scaleY(0.85); }
+  100%      { transform: translate(0px, 0px) scaleY(0.55); }
+}
+@keyframes charMouth {
+  0%, 20%   { transform: scale(1, 1) translateY(0px); }
+  25%, 45%  { transform: scale(0.9, -1) translateY(2px); }
+  50%, 70%  { transform: scale(1.2, 1.6) translateY(2px); }
+  75%, 95%  { transform: scale(0.8, 0.3) translateY(0px); }
+  100%      { transform: scale(1, 1) translateY(0px); }
+}
+@keyframes charProp {
+  0%, 20%, 25%, 45%, 50%, 70%, 74%, 96%, 100% { opacity: 0; transform: scale(0.6); }
+  75%, 95% { opacity: 1; transform: scale(1); }
+}
+@keyframes charStop1 {
+  0%, 20%   { stop-color: #f0e6ca; }
+  25%, 45%  { stop-color: #c1d1f1; }
+  50%, 70%  { stop-color: #f6b8ef; }
+  75%, 95%  { stop-color: #d1f1c1; }
+  100%      { stop-color: #f0e6ca; }
+}
+@keyframes charStop2 {
+  0%, 20%   { stop-color: #998d4f; }
+  25%, 45%  { stop-color: #6f798b; }
+  50%, 70%  { stop-color: #9a5aa0; }
+  75%, 95%  { stop-color: #6f8b6f; }
+  100%      { stop-color: #998d4f; }
+}
+
+/* story face — reuses the light portfolio palette, on purpose */
+.snc-story {
+  background: var(--color-story-bg);
+  border: 2px solid var(--color-story-border);
+  color: var(--color-story-text);
+  flex-direction: column;
+  align-items: stretch; justify-content: flex-start;
+  padding: var(--space-4) clamp(20px, 5vw, 90px);
+  overflow-y: auto;
+}
+.snc-story-nav {
+  display: flex; align-items: center; justify-content: center; gap: var(--space-4);
+  margin-bottom: var(--space-3); flex: none;
+}
+.snc-story-arrow {
+  width: 0; height: 0; border-top: 8px solid transparent; border-bottom: 8px solid transparent;
+  cursor: pointer; flex: none;
+}
+.snc-story-arrow--prev { border-right: 11px solid var(--color-story-text); }
+.snc-story-arrow--next { border-left: 11px solid var(--color-story-text); }
+.snc-story-title { font-family: var(--font-ui); font-size: 19px; text-align: center; }
+.snc-story-body { font-family: var(--font-ui); font-size: 14px; line-height: 1.6; }
+.snc-story-body p { margin: 0 0 var(--space-2); }
+
+/* score card, overlaid bottom-left of the shared media box in both modes —
+   text color flips for contrast against whichever face is showing */
+.snc-score-card {
+  position: absolute; left: 16px; bottom: 16px; z-index: 2;
+  width: 118px;
+  background: var(--color-glass-bg);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-card);
+  padding: 8px 10px;
+  font-family: var(--font-ui); font-size: 9px; line-height: 1.9;
+  color: #fcfcfc;
+}
+.snc-media[data-mode="story"] .snc-score-card { color: var(--color-story-text); }
+.snc-score-date { font-weight: 700; font-size: 11px; margin-bottom: 2px; }
+.snc-score-date b { font-size: 13px; float: right; }
+
+/* controls row: toggle switch — play — timestamp */
+.snc-controls {
+  margin-top: var(--space-3);
+  display: flex; align-items: center; justify-content: center; gap: var(--space-4);
+  position: relative;
+}
+.snc-toggle {
+  position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  display: inline-flex; align-items: center; gap: 4px;
+  background: #fff; border-radius: 999px; padding: 4px;
+  cursor: pointer; border: none;
+}
+.snc-toggle-opt {
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: #9b9797; transition: background 250ms ease, color 250ms ease;
+}
+.snc-toggle[data-active="scene"] .snc-toggle-opt--scene,
+.snc-toggle[data-active="story"] .snc-toggle-opt--story {
+  background: var(--color-bg); color: #fff;
+}
+.snc-play {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: transparent; border: 1.5px solid var(--color-text);
+  color: var(--color-text);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.snc-timestamp {
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  font-family: var(--font-ui); font-size: 11px; color: var(--color-text-muted);
+}
+
+/* scrubber */
+.snc-scrubber { margin-top: var(--gap-el); user-select: none; }
+.snc-scrubber-track {
+  position: relative; height: 10px; background: #e2e2e2; border-radius: 6px;
+  cursor: pointer; touch-action: none;
+  transition: background 0.15s ease;
+}
+.snc-scrubber-track:hover {
+  background: #d4d4d4;
+}
+.snc-scrubber-tick {
+  position: absolute; top: 100%; width: 1px; height: 8px; background: rgba(0,0,0,0.15);
+}
+.snc-scrubber-handle {
+  position: absolute; top: 50%; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--color-text); transform: translate(-50%, -50%);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.25), 0 0 0 3px rgba(255,255,255,0.9);
+  cursor: grab; touch-action: none;
+  transition: transform 0.1s ease, box-shadow 0.15s ease;
+}
+.snc-scrubber-handle:active,
+.snc-scrubber.is-dragging .snc-scrubber-handle {
+  cursor: grabbing;
+  transform: translate(-50%, -50%) scale(1.18);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.35), 0 0 0 4px rgba(255,255,255,1);
+}
+.snc-scrubber-star {
+  position: absolute; top: 50%; transform: translate(-50%, -50%);
+  color: #f0e6ca; font-size: 18px;
+}
+.snc-scrubber-labels {
+  display: flex; justify-content: space-between; margin-top: var(--space-2);
+  font-family: var(--font-ui); font-weight: 700; font-size: 15px; color: var(--color-text);
+}
+
+/* centered CTA directly under the media block, per the design */
+.snc-media-cta { display: flex; justify-content: center; margin-top: var(--gap-el); }
+
+/* — generic section rhythm — one gap unit between elements inside a
+     section (h2 -> intro -> content -> link), 180px between sections (the
+     section's own top padding IS that gap — no visible divider lines,
+     separation is whitespace only) — */
+.snc-section {
+  padding-top: var(--gap-section);
+  display: flex; flex-direction: column; gap: var(--gap-el);
+}
+.snc-section--center { text-align: center; align-items: center; }
+.snc-section h2 { font-size: clamp(30px, 4vw, 44px); margin: 0; }
+/* one body-copy size sitewide (hero paragraphs, section intros, the quote,
+   the CTA banner paragraph) — matches the homepage's own .bio p (20px) so
+   nothing reads as a different scale as you move down the page */
+.snc-section-intro {
+  color: var(--color-text); font-family: var(--font-ui); font-size: 20px; line-height: 1.3125;
+  max-width: 560px; margin: 0;
+}
+.snc-section--center .snc-section-intro { margin-left: auto; margin-right: auto; }
+.snc-quote {
+  max-width: 620px; margin: 0 auto; font-family: var(--font-ui); font-size: 20px;
+  color: var(--color-text); line-height: 1.3125;
+}
+/* the two "> " links (What&Why, What's Next) share this — same body size,
+   and a hover color change since they're actually clickable */
+.snc-link {
+  display: inline-block;
+  font-family: var(--font-ui); font-size: 20px; text-decoration: underline;
+  text-underline-offset: 3px;
+  color: var(--color-text);
+  transition: color 250ms ease;
+}
+.snc-link:hover { color: var(--color-accent-text); }
+/* the last section's bottom padding equals one section-gap, so the CTA
+   banner below sits the same 180px distance away as any two sections would */
+.snc-section:last-of-type { padding-bottom: var(--gap-section); }
+
+/* — placeholder blocks: the Figma file itself leaves these as flat light-grey
+     swatches (real content TBD), so we match that rather than inventing a
+     dark "placeholder" treatment — */
+.snc-placeholder {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--color-placeholder);
+  border-radius: var(--radius-sm);
+  color: #7d7979;
+  font-family: var(--font-ui); font-size: 12px; text-align: center; padding: var(--space-3);
+}
+
+/* — how section: a click-to-select stepper. The 5 items and the image+
+     caption panel are stretched to the same overall height (align-items:
+     stretch + the list as a space-between flex column) so the two columns
+     read as one unified block, per the "should look like one big block"
+     note. The active item's top/bottom/left border forms a half-open box
+     that visually "points at" the panel it controls. — */
+.snc-how-grid {
+  display: grid; grid-template-columns: 1fr 1.6fr; gap: var(--space-8); align-items: stretch;
+}
+.snc-how-list {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: column; justify-content: space-between;
+}
+.snc-how-list li {
+  font-family: var(--font-ui); font-size: 20px; color: var(--color-text-muted);
+  padding: 14px 18px; cursor: pointer;
+  border-top: 1px solid transparent; border-bottom: 1px solid transparent; border-left: 2px solid transparent;
+  transition: color 250ms ease, border-color 250ms ease, background 250ms ease;
+}
+.snc-how-list li:hover { color: var(--color-text); }
+.snc-how-list li.is-active {
+  color: var(--color-text);
+  border-top-color: var(--color-divider);
+  border-bottom-color: var(--color-divider);
+  border-left-color: var(--color-text);
+  background: rgba(255,255,255,0.04);
+}
+.snc-how-panel { display: flex; flex-direction: column; gap: var(--gap-el); height: 100%; }
+.snc-how-image { flex: 1; }
+/* smaller caption size (matches .snc-footer-desc) so this wraps to 2 lines,
+   not the 20px body-copy size which ran to 3 */
+.snc-how-caption { margin: 0; font-family: var(--font-ui); font-size: 13px; line-height: 1.5; color: var(--color-text-muted); }
+
+/* — insights — two cards, each a bordered frame (caption + two stacked
+     image placeholders, touching — no gap between them, per Figma) with a
+     second caption sitting below the frame's own border — */
+.snc-insights-grid {
+  width: 100%;
+  display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-6);
+  /* 3x the standard element gap above the cards — the section's own flex
+     gap already provides 1x, this adds the other 2x on top */
+  margin-top: calc(var(--gap-el) * 2);
+}
+.snc-insight-card { display: flex; flex-direction: column; gap: var(--gap-el); }
+.snc-insight-card-frame {
+  border: 1px solid var(--color-divider);
+  border-radius: var(--radius-md);
+  background: rgba(255,255,255,0.02);
+  padding: var(--space-3);
+  display: flex; flex-direction: column; gap: var(--space-2);
+}
+.snc-insight-caption-top {
+  margin: 0; font-family: var(--font-ui); font-size: 13px; color: var(--color-text-muted);
+}
+.snc-insight-image { aspect-ratio: 431 / 150; }
+.snc-insight-caption-bottom {
+  margin: 0; font-family: var(--font-ui); font-style: italic; font-size: 12px;
+  color: var(--color-text-muted); text-align: center;
+}
+
+/* — CTA banner — just the default 180px shell like every other content
+     section; 1.5x the base padding to read noticeably taller. Its own
+     bottom margin is the 180px gap before the footer starts. — */
+/* back to the standard 1x section gap — doubling it read as an oversized
+   gap against the rest of the page's rhythm */
+.snc-cta-wrap { margin-bottom: var(--gap-section); }
+.snc-cta-banner-inner {
+  background: var(--color-glass-bg);
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-lg);
+  padding: calc(var(--space-8) * 1.5) var(--space-8);
+  display: flex; align-items: center; justify-content: center; gap: 384px;
+  flex-wrap: wrap;
+}
+.snc-cta-banner-copy { flex: 0 1 auto; max-width: 480px; }
+.snc-cta-banner-copy h3 { font-family: var(--font-display); font-style: italic; font-size: clamp(30px, 3.4vw, 42px); margin: 0 0 8px; }
+.snc-cta-banner-copy p { margin: 0; color: var(--color-text); font-family: var(--font-ui); font-size: 16px; max-width: 460px; }
+
+/* — footer — compact band, 90px (narrow) shell. Column 1 (title, a shorter
+     3-line description, then the icon row) sits left; the two link lists
+     cluster together and sit pinned toward the right margin, matching the
+     wide gap Figma leaves between them — not evenly spread across the row. */
+.snc-footer {
+  background: rgba(23,23,23,0.35);
+  box-shadow: inset 0 8px 20px -8px rgba(255,255,255,0.25);
+  padding: var(--space-6) 0;
+}
+.snc-footer-grid {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  flex-wrap: wrap; gap: var(--space-6);
+}
+.snc-footer-main { max-width: 320px; }
+.snc-footer-links { display: flex; gap: var(--space-8); }
+.snc-footer-title { font-family: var(--font-display); font-size: 20px; margin: 0 0 8px; }
+.snc-footer-desc { font-family: var(--font-ui); font-size: 13px; color: var(--color-text-muted); max-width: 290px; }
+/* "Key Links" reuses the exact same bold-heading treatment as "Other Tools
+   by Mayank" — it's a label, not a link, so no anchor/hover behavior */
+.snc-footer h4 { font-family: var(--font-ui); font-weight: 700; font-size: 15px; margin: 0 0 var(--space-2); color: var(--color-text); }
+.snc-footer-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.snc-footer-list a { font-family: var(--font-ui); font-size: 14px; color: var(--color-text); transition: color 300ms ease; }
+.snc-footer-list a:hover { color: var(--color-text-muted); }
+.snc-footer-icons {
+  display: flex; align-items: center; gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+.snc-footer-icon {
+  width: 26px; height: 26px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-text);
+  transition: transform 300ms ease;
+}
+.snc-footer-icon:hover { transform: translateY(-2px); }
+
+@media (max-width: 1100px) {
+  :root { --margin-x: 80px; --margin-narrow: 50px; --gap-section: 100px; }
+}
+@media (max-width: 720px) {
+  :root { --margin-x: 24px; --margin-narrow: 20px; --gap-section: 64px; }
+  .snc-header-nav { display: none; }
+  .snc-hero-row { flex-direction: column; }
+  .snc-hero-graphic { width: 140px; }
+  .snc-how-grid { grid-template-columns: 1fr; }
+  .snc-how-list { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+  .snc-insights-grid { grid-template-columns: 1fr; }
+  .snc-footer-grid { flex-direction: column; }
+  .snc-footer-main { max-width: none; }
+  .snc-footer-desc { max-width: none; }
+  .snc-footer-links { gap: var(--space-6); }
+  .snc-toggle, .snc-timestamp { position: static; transform: none; }
+  .snc-controls { flex-direction: column; gap: var(--space-3); }
+  .snc-story { padding: var(--space-3) clamp(14px, 5vw, 30px); }
+  .snc-story-title { font-size: 15px; }
+  .snc-story-body { font-size: 12px; }
+  .snc-score-card { width: 100px; font-size: 8px; padding: 6px 8px; }
+}
+
+/* ── Two-Way Wooden Signpost (Panel 3: Gévezé & Rennes) ────────────── */
+.snc-p3-signpost-wrap {
+  position: absolute;
+  bottom: 4%;
+  left: 0;
+  width: 9.5%;
+  height: 28.5%;
+  pointer-events: none;
+  z-index: 15;
+  transform: translate3d(1150%, 0, 0);
+  animation: p3SignpostSlide 24s linear forwards;
+}
+
+.snc-p3-signpost-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  display: block;
+}
+
+@keyframes p3SignpostSlide {
+  0%, 59.16% {
+    transform: translate3d(1150%, 0, 0);
+  }
+  59.17% {
+    transform: translate3d(1150%, 0, 0);
+  }
+  77.50% {
+    transform: translate3d(476%, 0, 0);
+  }
+  95.83%, 100% {
+    transform: translate3d(-260%, 0, 0);
+  }
+}
+
+/* ── Panel 3 Background Terrain Parallax Scroll (13.6s - 24.0s) ────── */
+.sc-r3 { animation: scR3P3 24s linear forwards !important; }
+.sc-r2 { animation: scR2P3 24s linear forwards !important; }
+.sc-r1 { animation: scR1P3 24s linear forwards !important; }
+.sc-r0 { animation: scR0P3 24s linear forwards !important; }
+
+@keyframes scR3P3 {
+  0%, 56.67%   { transform: translateX(0px); }
+  100%        { transform: translateX(-520px); }
+}
+
+@keyframes scR2P3 {
+  0%, 56.67%   { transform: translateX(0px); }
+  100%        { transform: translateX(-280px); }
+}
+
+@keyframes scR1P3 {
+  0%, 56.67%   { transform: translateX(0px); }
+  100%        { transform: translateX(-140px); }
+}
+
+@keyframes scR0P3 {
+  0%, 56.67%   { transform: translateX(0px); }
+  100%        { transform: translateX(-60px); }
+}

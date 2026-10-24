@@ -33,6 +33,12 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 
+@keyframes omBlink {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
 html, body { margin: 0; padding: 0; }
 html { background: #2a2a2a; }
 body {
@@ -254,13 +260,567 @@ img { display: block; max-width: 100%; }
 @media (max-width: 1100px) {
   :root { --margin-x: 80px; --margin-narrow: 50px; }
 }
-@media (max-width: 720px) {
-  :root { --margin-x: 24px; --margin-narrow: 20px; }
-  .snc-hero-row { flex-direction: column; align-items: flex-start; }
-  .snc-hero-photos { width: 100%; max-width: 300px; margin: 0 auto; }
-  .snc-cta-row { padding-left: 24px; padding-right: 24px; }
-  .snc-btn { width: 100%; }
-  .snc-footer-grid { flex-direction: column; align-items: flex-start; }
-  .snc-footer-main { flex-direction: column; align-items: flex-start; gap: var(--space-2); }
-  .snc-footer-tools { gap: var(--space-6); }
+
+/* ==========================================================================
+   Desktop SNC Layout (Screens > 768px)
+   ========================================================================== */
+@media (min-width: 769px) {
+  .snc-site-header {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    z-index: 10;
+    background: transparent;
+    border: none;
+  }
+  .snc-site-header .chrome-canvas--header {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 14px var(--margin-narrow);
+    display: flex;
+    align-items: center;
+  }
+  .snc-site-header .site-header-home img {
+    height: 39px;
+    width: auto;
+    margin-top: 20px;
+    transition: transform 400ms cubic-bezier(0.22,0.61,0.36,1);
+    display: block;
+  }
+  .snc-site-header .site-header-home:hover img {
+    transform: scale(1.06);
+  }
+  .snc-site-header .site-header-home:active img {
+    transform: scale(0.95);
+  }
+  .snc-site-header .latest-work,
+  .snc-site-header .open-for-work,
+  .mobile-drawer-toggle,
+  .drawer-backdrop,
+  .snc-page-sidebar {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   Mobile SNC Dedicated Layout (Screens <= 768px)
+   ========================================================================== */
+@media (max-width: 768px) {
+  :root {
+    --margin-x: 20px;
+    --margin-narrow: 16px;
+  }
+
+  html, body {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow-x: hidden !important;
+  }
+
+  body.drawer-open,
+  html.drawer-open {
+    overflow: hidden !important;
+    touch-action: none !important;
+  }
+
+  .snc-above-fold {
+    min-height: auto !important;
+    display: block !important;
+    padding-bottom: 0 !important;
+  }
+  .snc-fold-main {
+    display: block !important;
+  }
+
+  /* 1. Header: Sticky 3-part layout (Logo / Latest Work / Hamburger) */
+  .snc-site-header {
+    position: sticky !important;
+    top: 0 !important;
+    height: 54px !important;
+    background: #252525 !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+    z-index: 100 !important;
+    padding-top: env(safe-area-inset-top, 0px);
+    transition: background 250ms ease, box-shadow 250ms ease;
+  }
+  .snc-site-header.is-scrolled {
+    background: rgba(30, 30, 30, 0.94) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+  }
+  .snc-site-header .chrome-canvas--header {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 14px !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    position: relative !important;
+  }
+  .snc-site-header .site-header-home,
+  .snc-site-header .snc-home-link {
+    position: static !important;
+    display: flex !important;
+    align-items: center !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .snc-site-header .site-header-home img,
+  .snc-site-header .snc-home-link img {
+    height: 28px !important;
+    width: auto !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+  .snc-site-header .latest-work {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 1 1 auto !important;
+    text-align: center !important;
+    padding: 0 8px !important;
+    margin: 0 !important;
+    min-width: 0 !important;
+  }
+  .snc-site-header .latest-work .mobile-latest-work,
+  .snc-site-header .latest-work a {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    color: var(--color-text-soft) !important;
+    text-decoration: none !important;
+    font-family: var(--font-ui) !important;
+    font-size: clamp(10.5px, 2.8vw, 12.5px) !important;
+    letter-spacing: -0.01em !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-width: 100% !important;
+  }
+  .snc-site-header .latest-work .mobile-latest-prefix {
+    color: rgba(250, 250, 250, 0.6) !important;
+  }
+  .snc-site-header .latest-work .mobile-latest-name {
+    color: #fafafa !important;
+    font-weight: 500 !important;
+    text-decoration: underline !important;
+    text-underline-offset: 2.5px !important;
+    text-decoration-color: #998d4f !important;
+  }
+  .snc-site-header .latest-work .mobile-external-arrow {
+    opacity: 0.7 !important;
+    color: #fafafa !important;
+  }
+  .snc-site-header .open-for-work {
+    display: none !important;
+  }
+
+  /* Hamburger toggle button */
+  .snc-page .mobile-drawer-toggle {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #fafafa;
+    -webkit-tap-highlight-color: transparent;
+    z-index: 60;
+    flex: 0 0 auto !important;
+  }
+  .snc-page .hamburger-bar {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: #fafafa;
+    border-radius: 2px;
+    transition: transform 250ms ease, opacity 250ms ease;
+  }
+
+  /* Navigation Drawer */
+  .snc-page-sidebar {
+    display: flex !important;
+    flex-direction: column !important;
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    left: auto !important;
+    bottom: 0 !important;
+    width: 60vw !important;
+    min-width: 235px !important;
+    max-width: 330px !important;
+    height: 100dvh !important;
+    height: 100vh !important;
+    background: #FAF9F6;
+    color: #454545;
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.45);
+    z-index: 999 !important;
+    padding: 14px 16px max(18px, env(safe-area-inset-bottom, 18px)) !important;
+    gap: 8px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box !important;
+    transform: translateX(105%);
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .snc-page-sidebar.is-open {
+    transform: translateX(0);
+  }
+  .snc-page .drawer-backdrop {
+    display: block !important;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    z-index: 998;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 280ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .snc-page .drawer-backdrop.is-active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .snc-page-sidebar .drawer-header {
+    display: flex !important;
+    align-items: center;
+    justify-content: space-between !important;
+    padding: 0 0 8px;
+    margin-bottom: 2px;
+    border-bottom: none !important;
+    flex: 0 0 auto;
+  }
+  .snc-page-sidebar .drawer-home-logo {
+    display: inline-flex;
+    align-items: center;
+    line-height: 1;
+    text-decoration: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .snc-page-sidebar .drawer-home-logo img {
+    height: 26px;
+    width: auto;
+    display: block;
+    transition: transform 300ms cubic-bezier(0.22,0.61,0.36,1);
+  }
+  .snc-page-sidebar .drawer-home-logo:hover img {
+    transform: scale(1.08);
+  }
+  .snc-page-sidebar .drawer-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    padding: 0;
+    color: #454545;
+    cursor: pointer;
+    border-radius: 4px;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .snc-page-sidebar .page-card {
+    width: 100% !important;
+    height: 42px !important;
+    margin: 0 !important;
+    font-family: var(--font-display);
+    font-size: 19px !important;
+    line-height: 1.2 !important;
+    border-radius: 4px;
+    border: 1px solid #D7CCCC;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    flex: 0 0 auto;
+    box-sizing: border-box;
+    text-decoration: none;
+    color: #454545 !important;
+    filter: grayscale(0.85) opacity(0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: filter 300ms ease, color 300ms ease, box-shadow 300ms ease;
+  }
+  .snc-page-sidebar .page-card:hover,
+  .snc-page-sidebar .page-card:active {
+    filter: grayscale(0) opacity(1);
+    color: #181818 !important;
+  }
+  .snc-page-sidebar .page-card-corner {
+    font-family: "Inspiration", cursive;
+    font-size: 14px;
+    position: absolute;
+    color: #555;
+  }
+  .snc-page-sidebar .page-card-corner--pre { top: 2px; left: 8px; }
+  .snc-page-sidebar .page-card-corner--post { bottom: 2px; right: 8px; }
+  .snc-page-sidebar .page-sidebar-home {
+    margin-top: 6px !important;
+    padding: 10px 12px !important;
+    font-family: var(--font-display) !important;
+    font-size: 17px !important;
+    line-height: 1.25 !important;
+    color: #181818 !important;
+    border: 1px solid rgba(153, 141, 79, 0.45) !important;
+    border-radius: 4px !important;
+    background: rgba(240, 230, 202, 0.4) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    text-decoration: none !important;
+    box-shadow: 0 2px 6px rgba(153, 141, 79, 0.15) !important;
+  }
+  .snc-page-sidebar .page-sidebar-home.is-current {
+    font-weight: 600 !important;
+    border-color: #998d4f !important;
+    background: linear-gradient(135deg, rgba(240, 230, 202, 0.75), rgba(153, 141, 79, 0.25)) !important;
+  }
+  .snc-page-sidebar .drawer-footer {
+    margin-top: auto !important;
+    padding-top: 12px !important;
+    border-top: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    flex: 0 0 auto !important;
+  }
+  .snc-page-sidebar .drawer-status {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 2px 0;
+  }
+  .snc-page-sidebar .open-for-work-dot {
+    width: 9px !important;
+    height: 9px !important;
+    border-radius: 50% !important;
+    background: #EA1515 !important;
+    border: 1px solid #BFA1A1 !important;
+    display: block !important;
+    box-shadow: 0 0 6px rgba(234, 21, 21, 0.4) !important;
+    animation: omBlink 3.6s ease-in-out infinite !important;
+  }
+  .snc-page-sidebar .open-for-work-label {
+    font-family: var(--font-ui) !important;
+    font-size: 13.5px !important;
+    font-weight: 500 !important;
+    color: #EA1515 !important;
+    letter-spacing: -0.01em !important;
+  }
+  .snc-page-sidebar .drawer-links {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .snc-page-sidebar .drawer-nav-item {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 32px !important;
+    padding: 6px 4px !important;
+    color: #454545 !important;
+    text-decoration: none !important;
+    font-family: var(--font-ui) !important;
+    font-size: 13.5px !important;
+    font-weight: 400 !important;
+    letter-spacing: -0.01em !important;
+    box-sizing: border-box !important;
+    -webkit-tap-highlight-color: transparent;
+    transition: color 150ms ease;
+  }
+  .snc-page-sidebar .drawer-nav-item:first-child {
+    padding-left: 0 !important;
+  }
+  .snc-page-sidebar .drawer-nav-item:last-child {
+    padding-right: 0 !important;
+  }
+  .snc-page-sidebar .drawer-nav-item:hover,
+  .snc-page-sidebar .drawer-nav-item:active {
+    color: #181818 !important;
+  }
+
+  /* 2. Coming Soon Section */
+  .snc-coming-soon {
+    padding-top: clamp(28px, 4.5vh, 40px) !important;
+    padding-bottom: clamp(18px, 2.5vh, 24px) !important;
+    text-align: center !important;
+  }
+  .snc-coming-soon h1 {
+    font-size: clamp(34px, 9vw, 44px) !important;
+    margin-bottom: 8px !important;
+  }
+  .snc-coming-soon-notify {
+    font-size: clamp(15px, 4vw, 17px) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    color: var(--color-text-soft) !important;
+    border-bottom: 1px solid rgba(213, 208, 176, 0.4) !important;
+  }
+  .snc-notify-arrow {
+    display: inline-block;
+    font-size: 1.05em;
+    transform: translate(1px, -1px);
+    transition: transform 200ms ease;
+  }
+  .snc-coming-soon-notify:hover .snc-notify-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  /* 3. Hero Row: Equidistant from Coming Soon link above and CTA button below */
+  .snc-hero-row {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 0 !important;
+    padding: 0 var(--margin-x) !important;
+    max-width: 480px !important;
+    margin-top: clamp(18px, 2.5vh, 24px) !important;
+    margin-bottom: clamp(18px, 2.5vh, 24px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Animation Div: Moved upwards (order: 1) with top margin 0 */
+  .snc-hero-photos {
+    order: 1 !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-width: 340px !important;
+    height: 170px !important;
+    aspect-ratio: auto !important;
+    margin: 0 auto clamp(12px, 2vh, 18px) !important;
+    position: relative !important;
+    left: auto !important;
+  }
+  .snc-hero-photo--a,
+  .snc-hero-photo--b {
+    height: 85% !important;
+  }
+  .snc-hero-ghost {
+    height: 44% !important;
+  }
+
+  /* Story Text: Directly above CTA button - flex: 0 0 auto & height: auto prevents inheriting 400px height */
+  .snc-hero-copy {
+    order: 2 !important;
+    flex: 0 0 auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: left !important;
+    gap: 10px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .snc-hero-copy h2 {
+    font-size: clamp(28px, 7.5vw, 36px) !important;
+    line-height: 1.15 !important;
+    margin-bottom: 4px !important;
+  }
+  .snc-hero-copy p {
+    font-size: 15.5px !important;
+    line-height: 1.5 !important;
+    color: rgba(250, 250, 250, 0.9) !important;
+    margin: 0 !important;
+  }
+
+  /* 4. Scavenger Hunt CTA: Positioned equidistant from story text */
+  .snc-cta-row {
+    padding-top: clamp(18px, 2.5vh, 24px) !important;
+    padding-bottom: clamp(32px, 5vh, 48px) !important;
+    padding-left: var(--margin-x) !important;
+    padding-right: var(--margin-x) !important;
+    display: flex !important;
+    justify-content: center !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .snc-btn {
+    width: 100% !important;
+    max-width: 340px !important;
+    padding: 15px 20px !important;
+    font-size: 20px !important;
+    border-radius: 26px !important;
+    text-align: center !important;
+  }
+
+  /* 6. Dedicated Footer */
+  .snc-footer {
+    padding: 36px 0 max(28px, env(safe-area-inset-bottom, 28px)) !important;
+    background: #232323 !important;
+  }
+  .snc-footer-grid {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 24px !important;
+    padding: 0 var(--margin-x) !important;
+    max-width: 480px !important;
+    margin: 0 auto !important;
+  }
+  .snc-footer-main {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    width: 100% !important;
+  }
+  .snc-footer-name {
+    font-size: 22px !important;
+  }
+  .snc-footer-nav {
+    display: flex !important;
+    gap: 18px !important;
+  }
+  .snc-footer-nav a {
+    font-size: 14.5px !important;
+  }
+  /* Center the social icons horizontally with equal spacing */
+  .snc-footer-icons {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 22px !important;
+    padding: 6px 0 !important;
+    margin: 0 !important;
+  }
+  .snc-footer-icon {
+    width: 32px !important;
+    height: 32px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .snc-footer-tools {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    gap: 18px 24px !important;
+    width: 100% !important;
+    padding-top: 6px !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+  }
+  .snc-footer-list {
+    flex: 1 1 140px !important;
+    gap: 10px !important;
+  }
+  .snc-footer-list a {
+    font-size: 13.5px !important;
+    line-height: 1.4 !important;
+  }
 }

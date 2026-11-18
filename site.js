@@ -32,9 +32,9 @@ document.addEventListener('DOMContentLoaded', () => {
   if (latestWorkLink && !latestWorkLink.querySelector('.mobile-latest-name')) {
     latestWorkLink.className = 'mobile-latest-work';
     latestWorkLink.innerHTML = `
-      <span class="mobile-latest-prefix">Latest Work (Aug &lsquo;26):</span>
-      <span class="mobile-latest-name">Survey8b(.)com</span>
-      <svg class="mobile-external-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+      <span class="mobile-latest-prefix">Latest Work (Nov '26):</span>
+      <span class="mobile-latest-name">iSellOnline.in</span>
+      <span class="mobile-external-arrow">&#8594;</span>
     `;
   }
 
@@ -490,8 +490,8 @@ function initUniversalDeepLinks() {
     }
   });
 
-  // 4. Vibe Coding Cards (.vibe-card)
-  document.querySelectorAll('.vibe-card').forEach((card) => {
+  // 4. Vibe Coding project cards and featured projects
+  document.querySelectorAll('.vibe-card, .shahi-project').forEach((card) => {
     const titleEl = card.querySelector('.vibe-card-title');
     if (!titleEl) return;
     const title = titleEl.textContent.trim();
@@ -594,4 +594,56 @@ window.addEventListener('load', () => {
       label.textContent = expanded ? 'Show less' : 'Show more';
     });
   });
+});
+
+// Shahi Meva screenshot carousels keep their navigation state independent.
+document.querySelectorAll('[data-shahi-carousel]').forEach((carousel) => {
+  const imageNames = (carousel.dataset.images || '').split('|').filter(Boolean);
+  const image = carousel.querySelector('.shahi-carousel-image');
+  const position = carousel.querySelector('.shahi-carousel-position');
+  const title = carousel.dataset.title || 'Project';
+  if (!image || !position || imageNames.length === 0) return;
+
+  let currentIndex = 0;
+  const showImage = (index) => {
+    currentIndex = (index + imageNames.length) % imageNames.length;
+    image.classList.add('is-changing');
+    window.setTimeout(() => image.classList.remove('is-changing'), 180);
+    image.src = `images/vibe-coding/${imageNames[currentIndex]}`;
+    image.alt = `${title} screenshot ${currentIndex + 1} of ${imageNames.length}`;
+    position.textContent = `${currentIndex + 1}/${imageNames.length}`;
+  };
+
+  carousel.querySelector('[data-carousel-previous]')?.addEventListener('click', () => {
+    showImage(currentIndex - 1);
+  });
+  carousel.querySelector('[data-carousel-next]')?.addEventListener('click', () => {
+    showImage(currentIndex + 1);
+  });
+
+  const viewport = carousel.querySelector('.shahi-carousel-frame');
+  let touchStartX = null;
+  let suppressClick = false;
+  viewport?.addEventListener('pointerdown', (event) => {
+    if (event.pointerType === 'touch') {
+      touchStartX = event.clientX;
+      suppressClick = false;
+    }
+  });
+  viewport?.addEventListener('pointerup', (event) => {
+    if (touchStartX === null) return;
+    const swipeDistance = event.clientX - touchStartX;
+    touchStartX = null;
+    if (Math.abs(swipeDistance) < 40) return;
+    suppressClick = true;
+    event.preventDefault();
+    showImage(currentIndex + (swipeDistance < 0 ? 1 : -1));
+  });
+  viewport?.addEventListener('pointercancel', () => { touchStartX = null; });
+  viewport?.addEventListener('click', (event) => {
+    if (!suppressClick) return;
+    suppressClick = false;
+    event.preventDefault();
+    event.stopPropagation();
+  }, true);
 });

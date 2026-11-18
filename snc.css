@@ -392,9 +392,9 @@ img { display: block; max-width: 100%; }
     gap: 4px !important;
     color: var(--color-text-soft) !important;
     text-decoration: none !important;
-    font-family: var(--font-ui) !important;
-    font-size: clamp(10.5px, 2.8vw, 12.5px) !important;
-    letter-spacing: -0.01em !important;
+    font-family: 'Instrument Serif', serif !important;
+    font-size: 16px !important;
+    letter-spacing: 0.01em !important;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
@@ -410,7 +410,7 @@ img { display: block; max-width: 100%; }
     text-underline-offset: 2.5px !important;
     text-decoration-color: #998d4f !important;
   }
-  .snc-site-header .latest-work .mobile-external-arrow {
+  .snc-site-header .latest-work .latest-work-arrow {
     opacity: 0.7 !important;
     color: #fafafa !important;
   }
